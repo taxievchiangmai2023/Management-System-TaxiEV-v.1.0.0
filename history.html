@@ -172,7 +172,7 @@
             });
         }
 
-        function openEditForm(index, dateStr) {
+            function openEditForm(index, dateStr) {
             const item = currentHistoryData[index]; 
             document.getElementById('editRow').value = item.row; document.getElementById('editTimestamp').value = item.timestamp;
             document.getElementById('editDateDisplay').innerText = dateStr;
@@ -181,7 +181,7 @@
             document.getElementById('e_lineman').value = item.lineman || ""; document.getElementById('e_outside').value = item.outside || "";
             document.getElementById('e_mao').value = item.mao || ""; document.getElementById('e_mao_location').value = item.mao_location || "";
             
-            // 🌟 แก้ไขเงื่อนไข: ถ้าเป็น "สนามบิน" ถึงจะโชว์ช่องสนามบิน นอกนั้นให้ซ่อนให้หมด
+            // 🌟 เงื่อนไข: ถ้าเป็น "สนามบิน" โชว์ช่องสนามบิน นอกนั้นให้ซ่อน
             if (item.type === "สนามบิน") {
                 document.getElementById('airportSection').style.display = 'block'; 
                 document.getElementById('e_airport').value = item.airport_calc || "";
@@ -190,11 +190,11 @@
                 document.getElementById('e_airport').value = "";
             }
 
-            // ⚠️ ต้องมี 2 บรรทัดนี้ด้วยครับ (เพื่อสั่งให้ปิดหน้าประวัติ แล้วโชว์หน้าแก้ไข)
+            // ⚠️ 3 บรรทัดล่างนี้คือส่วนที่คุณทำหล่นหายไปครับ (มันทำหน้าที่ซ่อนหน้าประวัติ แล้วเปิดหน้าแก้ไขขึ้นมา)
             document.getElementById('historyList').style.display = 'none'; 
             document.getElementById('editSection').style.display = 'block'; 
             window.scrollTo(0, 0); 
-        } // 👈 ⚠️ เติมปีกกาตัวนี้เข้าไปเพื่อปิดฟังก์ชัน openEditForm ครับ
+        } // 👈 ปีกกาปิดฟังก์ชันที่หายไป กลับมาแล้วครับ!
 
         function closeEditForm() { document.getElementById('editSection').style.display = 'none'; document.getElementById('historyList').style.display = 'block'; }
 
