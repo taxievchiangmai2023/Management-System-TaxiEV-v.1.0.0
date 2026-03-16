@@ -190,6 +190,12 @@
                 document.getElementById('e_airport').value = "";
             }
 
+            // ⚠️ ต้องมี 2 บรรทัดนี้ด้วยครับ (เพื่อสั่งให้ปิดหน้าประวัติ แล้วโชว์หน้าแก้ไข)
+            document.getElementById('historyList').style.display = 'none'; 
+            document.getElementById('editSection').style.display = 'block'; 
+            window.scrollTo(0, 0); 
+        } // 👈 ⚠️ เติมปีกกาตัวนี้เข้าไปเพื่อปิดฟังก์ชัน openEditForm ครับ
+
         function closeEditForm() { document.getElementById('editSection').style.display = 'none'; document.getElementById('historyList').style.display = 'block'; }
 
         document.getElementById('editForm').onsubmit = async (e) => {
