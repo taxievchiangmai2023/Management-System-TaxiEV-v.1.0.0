@@ -181,13 +181,14 @@
             document.getElementById('e_lineman').value = item.lineman || ""; document.getElementById('e_outside').value = item.outside || "";
             document.getElementById('e_mao').value = item.mao || ""; document.getElementById('e_mao_location').value = item.mao_location || "";
             
-            if (item.type === "แอป") {
-                document.getElementById('airportSection').style.display = 'none'; document.getElementById('e_airport').value = "";
+            // 🌟 แก้ไขเงื่อนไข: ถ้าเป็น "สนามบิน" ถึงจะโชว์ช่องสนามบิน นอกนั้นให้ซ่อนให้หมด
+            if (item.type === "สนามบิน") {
+                document.getElementById('airportSection').style.display = 'block'; 
+                document.getElementById('e_airport').value = item.airport_calc || "";
             } else {
-                document.getElementById('airportSection').style.display = 'block'; document.getElementById('e_airport').value = item.airport_calc || "";
+                document.getElementById('airportSection').style.display = 'none'; 
+                document.getElementById('e_airport').value = "";
             }
-            document.getElementById('historyList').style.display = 'none'; document.getElementById('editSection').style.display = 'block'; window.scrollTo(0, 0); 
-        }
 
         function closeEditForm() { document.getElementById('editSection').style.display = 'none'; document.getElementById('historyList').style.display = 'block'; }
 
