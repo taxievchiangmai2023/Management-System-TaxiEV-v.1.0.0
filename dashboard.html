@@ -375,7 +375,7 @@
                 } else if (data.status === "suspended") {
                     document.getElementById('dashboardHeader').classList.add('hidden');
                     document.getElementById('app').classList.add('hidden');
-                    document.getElementById('loader').style.display = 'block';
+                    document.getElementById('loader').classList.remove('hidden');
                     document.getElementById('loader').innerHTML = `
                         <div class="container">
                             <div class="status-card danger">
@@ -388,7 +388,7 @@
                 } else {
                     document.getElementById('dashboardHeader').classList.add('hidden');
                     document.getElementById('app').classList.add('hidden');
-                    document.getElementById('loader').style.display = 'block';
+                    document.getElementById('loader').classList.remove('hidden');
                     document.getElementById('loader').innerHTML = `
                         <div class="container">
                             <div class="status-card warning">
@@ -405,7 +405,7 @@
         }
 
         async function fetchSummary() {
-            document.getElementById('loader').style.display = 'block';
+            document.getElementById('loader').classList.remove('hidden');
             document.getElementById('app').classList.add('hidden');
             try {
                 const res = await fetch(GAS_URL, {
@@ -425,7 +425,7 @@
                     document.getElementById('w3').innerText = data.weeks[2].toLocaleString() + " ฿";
                     document.getElementById('w4').innerText = data.weeks[3].toLocaleString() + " ฿";
                     document.getElementById('w5').innerText = data.weeks[4].toLocaleString() + " ฿";
-                    document.getElementById('loader').style.display = 'none';
+                    document.getElementById('loader').classList.add('hidden');
                     document.getElementById('app').classList.remove('hidden');
                 }
             } catch (err) {
