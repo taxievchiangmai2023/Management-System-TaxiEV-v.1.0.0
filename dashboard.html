@@ -4,52 +4,352 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>สรุปผลงาน - TaxiEV</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <style>
-        :root { --brand-dark: #13444B; --brand-light: #4EB1B3; --bg-light: #f4f7f6; }
-        body { background-color: var(--bg-light); font-family: 'Kanit', sans-serif; }
-        .dashboard-header { background: linear-gradient(135deg, var(--brand-dark), var(--brand-light)); color: white; padding: 30px 20px; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: relative; overflow: hidden;}
-        .dashboard-header::after { content: ''; position: absolute; top: -50%; right: -20%; width: 200px; height: 200px; background: rgba(255,255,255,0.05); transform: rotate(45deg); }
-        .stat-card { background: white; border-radius: 15px; padding: 20px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 15px; position: relative; z-index: 10;}
-        .text-huge { font-size: 2.8rem; font-weight: bold; margin: 10px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
-        .week-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed #e0e0e0; }
-        .week-row:last-child { border-bottom: none; }
-        .month-selector { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.5); color: white; border-radius: 10px; padding: 8px 15px; font-weight: bold; text-align: center; margin-top: 5px;}
-        .month-selector::-webkit-calendar-picker-indicator { filter: invert(1); cursor: pointer; }
-        .leave-badge { font-size: 1.5rem; color: #dc3545; font-weight: bold; }
-        .text-brand { color: var(--brand-light); }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --brand-dark: #13444B;
+            --brand-mid: #1A5C65;
+            --brand-light: #4EB1B3;
+            --brand-pale: #E8F6F6;
+            --bg: #F0F4F4;
+            --surface: #FFFFFF;
+            --text-primary: #1A2C2E;
+            --text-secondary: #5A7A7D;
+            --text-muted: #8FA8AB;
+            --border: #D8E4E5;
+            --warning: #E8A817;
+            --danger: #D94052;
+            --radius-sm: 10px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --shadow-sm: 0 1px 3px rgba(19,68,75,0.06);
+            --shadow-md: 0 4px 12px rgba(19,68,75,0.08);
+            --shadow-lg: 0 8px 24px rgba(19,68,75,0.10);
+        }
+
+        body {
+            background-color: var(--bg);
+            font-family: 'Noto Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+            padding-bottom: 40px;
+        }
+
+        /* ─── Header ─── */
+        .header {
+            background: linear-gradient(160deg, var(--brand-dark) 0%, var(--brand-mid) 50%, var(--brand-light) 100%);
+            color: #fff;
+            padding: 28px 24px 52px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -60%;
+            right: -20%;
+            width: 280px;
+            height: 280px;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -40%;
+            left: -15%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .header-label {
+            font-size: 0.78rem;
+            font-weight: 400;
+            opacity: 0.7;
+            position: relative;
+            z-index: 1;
+        }
+        .header-amount {
+            font-size: 2.6rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin: 6px 0 12px;
+            position: relative;
+            z-index: 1;
+        }
+        .header-amount .currency {
+            font-size: 1.4rem;
+            font-weight: 500;
+            opacity: 0.8;
+            margin-left: 4px;
+        }
+        .month-picker {
+            position: relative;
+            z-index: 1;
+            display: inline-block;
+        }
+        .month-picker input {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: #fff;
+            border-radius: var(--radius-sm);
+            padding: 8px 16px;
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-align: center;
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .month-picker input:focus {
+            background: rgba(255,255,255,0.25);
+        }
+        .month-picker input::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            cursor: pointer;
+        }
+
+        /* ─── Container ─── */
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        /* ─── Loader ─── */
+        .loader-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+        }
+        .spinner {
+            width: 36px;
+            height: 36px;
+            border: 3px solid var(--border);
+            border-top-color: var(--brand-light);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loader-text {
+            margin-top: 14px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* ─── Leave Card ─── */
+        .leave-card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 18px 20px;
+            margin-top: -28px;
+            position: relative;
+            z-index: 10;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: fadeUp 0.4s ease both;
+        }
+        .leave-card-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        .leave-card-value {
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+        }
+        .leave-number {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--danger);
+            line-height: 1;
+        }
+        .leave-unit {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--danger);
+            opacity: 0.8;
+        }
+
+        /* ─── Weekly Card ─── */
+        .weekly-card {
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            padding: 18px;
+            margin-top: 14px;
+            box-shadow: var(--shadow-sm);
+            animation: fadeUp 0.4s ease both;
+            animation-delay: 0.08s;
+        }
+        .weekly-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .weekly-title-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-sm);
+            background: var(--brand-pale);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+            flex-shrink: 0;
+        }
+        .weekly-title-text {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .week-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 11px 0;
+            border-bottom: 1px solid var(--bg);
+        }
+        .week-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .week-row:first-of-type {
+            padding-top: 0;
+        }
+        .week-label {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+        .week-value {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--brand-light);
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── Status Cards ─── */
+        .status-card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 28px 24px;
+            margin-top: 24px;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+            animation: fadeUp 0.4s ease both;
+        }
+        .status-card.danger  { border-top: 4px solid var(--danger); }
+        .status-card.warning { border-top: 4px solid var(--warning); }
+
+        .status-icon { font-size: 2rem; margin-bottom: 12px; }
+        .status-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+        .status-title.danger  { color: var(--danger); }
+        .status-title.warning { color: var(--warning); }
+        .status-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        .status-desc strong { color: var(--brand-dark); }
+        .error-text {
+            text-align: center;
+            color: var(--danger);
+            font-weight: 600;
+            padding: 40px 20px;
+            font-size: 0.9rem;
+        }
+
+        /* ─── Utility ─── */
+        .hidden { display: none !important; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .leave-card, .weekly-card, .status-card { animation: none; }
+        }
     </style>
 </head>
 <body>
-    <div class="dashboard-header mb-4">
-        <h6 class="mb-1 opacity-75">รายได้สุทธิประจำเดือน</h6>
-        <div class="text-huge" id="totalNet">0 ฿</div>
-        <input type="month" id="monthSelector" class="month-selector" onchange="fetchSummary()">
-    </div>
 
-    <div id="loader" class="text-center py-5"><div class="spinner-border text-info"></div><p class="mt-2 text-muted">กำลังคำนวณยอด...</p></div>
-
-    <div id="app" style="display:none; padding-bottom: 30px;">
-        <div class="container">
-            <div class="stat-card d-flex justify-content-between align-items-center px-4" style="margin-top: -30px;">
-                <span class="text-muted fw-bold">จำนวนวันที่หยุดพักผ่อน</span>
-                <span class="leave-badge"><span id="leaveDays">0</span> วัน</span>
-            </div>
-
-            <div class="stat-card mt-3 text-start">
-                <h6 class="fw-bold mb-3" style="color: var(--brand-dark);">📊 สรุปรายรับสุทธิ (รายสัปดาห์)</h6>
-                <div class="week-row"><span class="text-muted">สัปดาห์ที่ 1 (วันที่ 1-7)</span> <strong class="text-brand" id="w1">0 ฿</strong></div>
-                <div class="week-row"><span class="text-muted">สัปดาห์ที่ 2 (วันที่ 8-14)</span> <strong class="text-brand" id="w2">0 ฿</strong></div>
-                <div class="week-row"><span class="text-muted">สัปดาห์ที่ 3 (วันที่ 15-21)</span> <strong class="text-brand" id="w3">0 ฿</strong></div>
-                <div class="week-row"><span class="text-muted">สัปดาห์ที่ 4 (วันที่ 22-28)</span> <strong class="text-brand" id="w4">0 ฿</strong></div>
-                <div class="week-row"><span class="text-muted">ปลายเดือน (วันที่ 29 เป็นต้นไป)</span> <strong class="text-brand" id="w5">0 ฿</strong></div>
-            </div>
+    <!-- Header -->
+    <div class="header" id="dashboardHeader">
+        <div class="header-label">รายได้สุทธิประจำเดือน</div>
+        <div class="header-amount" id="totalNet">0 <span class="currency">฿</span></div>
+        <div class="month-picker">
+            <input type="month" id="monthSelector" onchange="fetchSummary()">
         </div>
     </div>
-<script>
-        // ⚠️ ใส่ LIFF ID และ GAS URL ของคุณ
-        const LIFF_ID = "2009451309-4BOlzBmc"; 
+
+    <!-- Loader -->
+    <div id="loader" class="loader-wrap">
+        <div class="spinner"></div>
+        <div class="loader-text">กำลังคำนวณยอด...</div>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div id="app" class="hidden">
+        <div class="container">
+
+            <!-- Leave Days -->
+            <div class="leave-card">
+                <span class="leave-card-label">จำนวนวันที่หยุดพักผ่อน</span>
+                <div class="leave-card-value">
+                    <span class="leave-number" id="leaveDays">0</span>
+                    <span class="leave-unit">วัน</span>
+                </div>
+            </div>
+
+            <!-- Weekly Breakdown -->
+            <div class="weekly-card">
+                <div class="weekly-title">
+                    <div class="weekly-title-icon">📊</div>
+                    <div class="weekly-title-text">สรุปรายรับสุทธิ (รายสัปดาห์)</div>
+                </div>
+                <div class="week-row">
+                    <span class="week-label">สัปดาห์ที่ 1 (วันที่ 1–7)</span>
+                    <span class="week-value" id="w1">0 ฿</span>
+                </div>
+                <div class="week-row">
+                    <span class="week-label">สัปดาห์ที่ 2 (วันที่ 8–14)</span>
+                    <span class="week-value" id="w2">0 ฿</span>
+                </div>
+                <div class="week-row">
+                    <span class="week-label">สัปดาห์ที่ 3 (วันที่ 15–21)</span>
+                    <span class="week-value" id="w3">0 ฿</span>
+                </div>
+                <div class="week-row">
+                    <span class="week-label">สัปดาห์ที่ 4 (วันที่ 22–28)</span>
+                    <span class="week-value" id="w4">0 ฿</span>
+                </div>
+                <div class="week-row">
+                    <span class="week-label">ปลายเดือน (วันที่ 29 เป็นต้นไป)</span>
+                    <span class="week-value" id="w5">0 ฿</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const LIFF_ID = "2009451309-4BOlzBmc";
         const GAS_URL = "https://script.google.com/macros/s/AKfycbzuh0khDmnAU624NO5a6LSLFDhp0-k-9VROw-ETyqE2wcn9c3f2tv0lLDA7ONfu17SI/exec";
         let userUid = "";
 
@@ -57,76 +357,83 @@
             await liff.init({ liffId: LIFF_ID });
             if (!liff.isLoggedIn()) { liff.login(); return; }
             userUid = (await liff.getProfile()).userId;
-            const now = new Date(); const yyyy = now.getFullYear(); let mm = now.getMonth() + 1;
+            const now = new Date();
+            const yyyy = now.getFullYear();
+            let mm = now.getMonth() + 1;
             if (mm < 10) mm = '0' + mm;
             document.getElementById('monthSelector').value = `${yyyy}-${mm}`;
-            
-            // แวะตรวจสิทธิ์ก่อน
             checkUser(userUid);
         }
 
-
-    async function checkUser(userId) {
+        async function checkUser(userId) {
             try {
                 const res = await fetch(`${GAS_URL}?uid=${userId}`);
                 const data = await res.json();
-                
+
                 if (data.status === "success") {
                     fetchSummary();
                 } else if (data.status === "suspended") {
-                    // 🚫 บัญชีถูกระงับ (InActive)
-                    document.querySelector('.dashboard-header').style.display = 'none';
-                    document.getElementById('app').style.display = 'none';
-                    
+                    document.getElementById('dashboardHeader').classList.add('hidden');
+                    document.getElementById('app').classList.add('hidden');
                     document.getElementById('loader').style.display = 'block';
                     document.getElementById('loader').innerHTML = `
-                        <div class="container pb-5">
-                            <div style="background: white; border-radius: 15px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-top: 40px; border-top: 5px solid #dc3545; text-align: center;">
-                                <h4 class="fw-bold text-danger mb-3">🚫 บัญชีถูกระงับ</h4>
-                                <p class="text-muted mb-0">ผู้ใช้ถูกระงับการใช้งาน<br>กรุณาติดต่อแอดมินหรือผู้ดูแลระบบครับ</p>
+                        <div class="container">
+                            <div class="status-card danger">
+                                <div class="status-icon">🚫</div>
+                                <div class="status-title danger">บัญชีถูกระงับ</div>
+                                <p class="status-desc">ผู้ใช้ถูกระงับการใช้งาน<br>กรุณาติดต่อแอดมินหรือผู้ดูแลระบบครับ</p>
                             </div>
                         </div>
                     `;
                 } else {
-                    // 🟡 คนใหม่ ไล่ไปหน้าส่งยอด
-                    document.querySelector('.dashboard-header').style.display = 'none';
-                    document.getElementById('app').style.display = 'none';
-                    
+                    document.getElementById('dashboardHeader').classList.add('hidden');
+                    document.getElementById('app').classList.add('hidden');
                     document.getElementById('loader').style.display = 'block';
                     document.getElementById('loader').innerHTML = `
-                        <div class="container pb-5">
-                            <div style="background: white; border-radius: 15px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-top: 40px; border-top: 5px solid #ffc107; text-align: center;">
-                                <h4 class="fw-bold text-warning mb-3">⚠️ ไม่มีสิทธิ์เข้าใช้งาน</h4>
-                                <p class="text-muted mb-0">บัญชีของคุณยังไม่ได้รับการอนุมัติ<br><br>กรุณาไปที่เมนู <b>"ส่งยอดรายวัน"</b> <br>เพื่อคัดลอกรหัส UID ส่งให้แอดมินครับ</p>
+                        <div class="container">
+                            <div class="status-card warning">
+                                <div class="status-icon">⚠️</div>
+                                <div class="status-title warning">ไม่มีสิทธิ์เข้าใช้งาน</div>
+                                <p class="status-desc">บัญชีของคุณยังไม่ได้รับการอนุมัติ<br><br>กรุณาไปที่เมนู <strong>"ส่งยอดรายวัน"</strong><br>เพื่อคัดลอกรหัส UID ส่งให้แอดมินครับ</p>
                             </div>
                         </div>
                     `;
                 }
             } catch(err) {
-                alert("เชื่อมต่อขัดข้อง");
+                document.getElementById('loader').innerHTML = `<p class="error-text">เชื่อมต่อเซิร์ฟเวอร์ผิดพลาด</p>`;
             }
         }
 
-        function copyMyUID(uidText) {
-            navigator.clipboard.writeText(uidText).then(() => { alert('คัดลอก UID สำเร็จ! นำไปวางในแชทให้แอดมินได้เลยครับ'); }).catch(err => { alert('ไม่สามารถคัดลอกได้อัตโนมัติ กรุณาคลุมดำและคัดลอกเองครับ'); });
+        async function fetchSummary() {
+            document.getElementById('loader').style.display = 'block';
+            document.getElementById('app').classList.add('hidden');
+            try {
+                const res = await fetch(GAS_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        status: "ดูสรุป",
+                        uid: userUid,
+                        month_val: document.getElementById('monthSelector').value
+                    })
+                });
+                const data = await res.json();
+                if (data.status === "success") {
+                    document.getElementById('totalNet').innerHTML = data.totalNet.toLocaleString() + ' <span class="currency">฿</span>';
+                    document.getElementById('leaveDays').innerText = data.leaveDays;
+                    document.getElementById('w1').innerText = data.weeks[0].toLocaleString() + " ฿";
+                    document.getElementById('w2').innerText = data.weeks[1].toLocaleString() + " ฿";
+                    document.getElementById('w3').innerText = data.weeks[2].toLocaleString() + " ฿";
+                    document.getElementById('w4').innerText = data.weeks[3].toLocaleString() + " ฿";
+                    document.getElementById('w5').innerText = data.weeks[4].toLocaleString() + " ฿";
+                    document.getElementById('loader').style.display = 'none';
+                    document.getElementById('app').classList.remove('hidden');
+                }
+            } catch (err) {
+                document.getElementById('loader').innerHTML = `<p class="error-text">โหลดข้อมูลผิดพลาด</p>`;
+            }
         }
 
-        async function fetchSummary() {
-            document.getElementById('loader').style.display = 'block'; document.getElementById('app').style.display = 'none';
-            try {
-                const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ status: "ดูสรุป", uid: userUid, month_val: document.getElementById('monthSelector').value }) });
-                const data = await res.json();
-                if(data.status === "success") {
-                    document.getElementById('totalNet').innerText = data.totalNet.toLocaleString() + " ฿"; document.getElementById('leaveDays').innerText = data.leaveDays;
-                    document.getElementById('w1').innerText = data.weeks[0].toLocaleString() + " ฿"; document.getElementById('w2').innerText = data.weeks[1].toLocaleString() + " ฿";
-                    document.getElementById('w3').innerText = data.weeks[2].toLocaleString() + " ฿"; document.getElementById('w4').innerText = data.weeks[3].toLocaleString() + " ฿";
-                    document.getElementById('w5').innerText = data.weeks[4].toLocaleString() + " ฿";
-                    document.getElementById('loader').style.display = 'none'; document.getElementById('app').style.display = 'block';
-                }
-            } catch (err) { alert("โหลดข้อมูลผิดพลาด"); }
-        }
         window.onload = main;
     </script>
-
 </body>
 </html>
