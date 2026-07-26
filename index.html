@@ -6,258 +6,200 @@
     <title>ส่งยอดรายวัน - TaxiEV</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
-            --brand-dark: #13444B;
-            --brand-mid: #1A5C65;
-            --brand-light: #4EB1B3;
-            --brand-pale: #E8F6F6;
-            --bg: #F0F4F4;
-            --surface: #FFFFFF;
-            --text-primary: #1A2C2E;
-            --text-secondary: #5A7A7D;
-            --text-muted: #8FA8AB;
-            --border: #D8E4E5;
-            --warning: #E8A817;
-            --warning-bg: #FFF8E7;
-            --success: #1D9E6F;
-            --success-bg: #E6F7F0;
-            --danger: #D94052;
-            --danger-bg: #FDE8EA;
-            --radius-sm: 10px;
-            --radius-md: 14px;
-            --radius-lg: 20px;
-            --shadow-sm: 0 1px 3px rgba(19,68,75,0.06);
-            --shadow-md: 0 4px 12px rgba(19,68,75,0.08);
-            --shadow-lg: 0 8px 24px rgba(19,68,75,0.10);
+            --bg: #FAFCFB;
+            --bg-alt: #EFF5F3;
+            --ink: #102520;
+            --ink-soft: #4E6B67;
+            --ink-faint: #8AA39F;
+            --accent: #1CA37D;
+            --accent-soft: rgba(28,163,125,0.10);
+            --blue: #3E6FE0;
+            --orange: #E07A1F;
+            --purple: #8862E0;
+            --rule: rgba(16,37,32,0.14);
+            --danger: #D9433B;
+            --danger-bg: #FBEAE8;
+            --warning: #C2790E;
+            --warning-bg: #FDF0DA;
+            --font: 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         body {
-            background-color: var(--bg);
-            font-family: 'Noto Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
-            color: var(--text-primary);
-            padding-bottom: 48px;
+            background: var(--bg);
+            color: var(--ink);
+            font-family: var(--font);
+            font-weight: 300;
+            padding-bottom: 0;
             -webkit-font-smoothing: antialiased;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         /* ─── Header ─── */
-        .header {
-            background: linear-gradient(160deg, var(--brand-dark) 0%, var(--brand-mid) 50%, var(--brand-light) 100%);
-            color: #fff;
-            padding: 32px 24px 48px;
-            text-align: center;
+        .app-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 24px 0;
+        }
+        .app-logo {
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+        }
+        .app-logo .hi {
+            background: linear-gradient(100deg, var(--accent), var(--blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .app-header-dot {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.68rem;
+            color: var(--ink-faint);
+            letter-spacing: 1px;
+        }
+        .app-header-dot::before {
+            content: '';
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 6px var(--accent);
+        }
+
+        /* ─── Hero ─── */
+        .hero {
             position: relative;
+            margin: 0 -24px;
+            padding: 22px 24px 8px;
             overflow: hidden;
         }
-        .header::before {
-            content: '';
+        .confetti { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+        .confetti span {
             position: absolute;
-            top: -60%;
-            right: -20%;
-            width: 280px;
-            height: 280px;
-            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
             border-radius: 50%;
+            opacity: 0.85;
         }
-        .header::after {
-            content: '';
-            position: absolute;
-            bottom: -40%;
-            left: -15%;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
-            border-radius: 50%;
+        .hero-content { position: relative; z-index: 1; }
+        .hero-title {
+            font-size: 1.7rem;
+            font-weight: 600;
+            line-height: 1.32;
         }
-        .header-logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            position: relative;
-            z-index: 1;
+        .hero-title .accent-name { color: var(--accent); font-weight: 700; }
+        .hero-caption {
+            margin-top: 14px;
+            font-size: 0.82rem;
+            color: var(--ink-soft);
+            font-weight: 300;
+            line-height: 1.6;
         }
-        .header-sub {
-            font-size: 0.8rem;
-            font-weight: 400;
-            opacity: 0.7;
-            letter-spacing: 3px;
-            margin-top: 2px;
-            position: relative;
-            z-index: 1;
-        }
+        .hero-caption .k { color: var(--accent); font-weight: 500; }
 
         /* ─── Container ─── */
-        .container {
-            max-width: 480px;
-            margin: 0 auto;
-            padding: 0 16px;
-        }
+        .container { padding: 0 24px; }
 
-        /* ─── Driver Card ─── */
-        .driver-card {
-            background: var(--surface);
-            border-radius: var(--radius-lg);
-            padding: 20px;
-            margin-top: -28px;
-            position: relative;
-            z-index: 10;
-            box-shadow: var(--shadow-lg);
-            text-align: center;
-        }
-        .driver-name {
-            font-size: 1.15rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 10px;
-        }
-        .driver-badges {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            font-family: inherit;
-        }
-        .badge-plate {
-            background: var(--bg);
-            color: var(--text-secondary);
-            border: 1px solid var(--border);
-        }
-        .badge-type {
-            background: var(--brand-pale);
-            color: var(--brand-dark);
-        }
-
-        /* ─── Form Sections ─── */
-        .form-section {
-            background: var(--surface);
-            border-radius: var(--radius-md);
-            padding: 18px;
-            margin-top: 14px;
-            box-shadow: var(--shadow-sm);
+        /* ─── Form sections ─── */
+        form { display: block; margin-top: 12px; }
+        .section {
+            padding: 26px 0;
+            border-top: 1px solid var(--rule);
             animation: fadeUp 0.4s ease both;
         }
-        .form-section:nth-child(2) { animation-delay: 0.05s; }
-        .form-section:nth-child(3) { animation-delay: 0.1s; }
-        .form-section:nth-child(4) { animation-delay: 0.15s; }
-        .form-section:nth-child(5) { animation-delay: 0.2s; }
-
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(12px); }
+            from { opacity: 0; transform: translateY(8px); }
             to   { opacity: 1; transform: translateY(0); }
         }
-
-        .section-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 14px;
-        }
-        .section-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: var(--radius-sm);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.95rem;
-            flex-shrink: 0;
-        }
-        .section-icon.app    { background: var(--brand-pale); }
-        .section-icon.outside{ background: var(--warning-bg); }
-        .section-icon.airport{ background: var(--success-bg); }
-
-        .section-title {
-            font-size: 0.85rem;
+        .section-eyebrow {
+            font-size: 0.68rem;
+            letter-spacing: 2px;
             font-weight: 600;
-            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+        .section.c-teal   .section-eyebrow { color: var(--accent); }
+        .section.c-blue   .section-eyebrow { color: var(--blue); }
+        .section.c-orange .section-eyebrow { color: var(--orange); }
+        .section.c-purple .section-eyebrow { color: var(--purple); }
+        .section.c-teal   .input-field:focus { border-bottom-color: var(--accent); box-shadow: 0 6px 10px -8px var(--accent); }
+        .section.c-blue   .input-field:focus { border-bottom-color: var(--blue); box-shadow: 0 6px 10px -8px var(--blue); }
+        .section.c-orange .input-field:focus { border-bottom-color: var(--orange); box-shadow: 0 6px 10px -8px var(--orange); }
+        .section.c-purple .input-field:focus { border-bottom-color: var(--purple); box-shadow: 0 6px 10px -8px var(--purple); }
+        .section-title {
+            font-size: 1.02rem;
+            font-weight: 600;
         }
 
-        /* ─── Inputs ─── */
         .input-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 20px 16px;
+            margin-top: 20px;
         }
-        .input-grid .full-width {
-            grid-column: 1 / -1;
-        }
-
-        .input-group {
-            position: relative;
-        }
+        .input-grid .full-width { grid-column: 1 / -1; }
+        .input-group { position: relative; }
         .input-label {
             display: block;
-            font-size: 0.72rem;
-            font-weight: 500;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-            letter-spacing: 0.3px;
+            font-size: 0.7rem;
+            font-weight: 400;
+            color: var(--ink-faint);
+            margin-bottom: 6px;
         }
         .input-field {
             width: 100%;
-            padding: 10px 12px;
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius-sm);
-            background: var(--bg);
-            font-family: inherit;
-            font-size: 0.95rem;
+            padding: 6px 2px 9px;
+            border: none;
+            border-bottom: 1px solid var(--rule);
+            border-radius: 0;
+            background: transparent;
+            font-family: var(--font);
+            font-size: 1rem;
             font-weight: 500;
-            color: var(--text-primary);
-            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+            color: var(--ink);
+            transition: border-color 0.2s, box-shadow 0.2s;
             outline: none;
             -webkit-appearance: none;
         }
-        .input-field::placeholder {
-            color: var(--text-muted);
-            font-weight: 400;
-        }
+        .input-field::placeholder { color: var(--ink-faint); font-weight: 300; }
         .input-field:focus {
-            border-color: var(--brand-light);
-            background: #fff;
-            box-shadow: 0 0 0 3px rgba(78,177,179,0.12);
+            border-bottom: 1.5px solid var(--accent);
+            box-shadow: 0 6px 10px -8px var(--accent);
         }
+        input[type="date"].input-field { color: var(--ink); font-weight: 500; }
 
-        /* date input */
-        input[type="date"].input-field {
-            color: var(--text-primary);
-        }
-
-        /* ─── Submit Button ─── */
+        /* ─── Submit ─── */
+        .submit-wrap { padding: 30px 0 40px; }
         .btn-submit {
             display: block;
             width: 100%;
-            padding: 14px;
-            margin-top: 18px;
-            border: none;
-            border-radius: var(--radius-md);
-            background: linear-gradient(135deg, var(--brand-dark), var(--brand-mid));
-            color: #fff;
-            font-family: inherit;
-            font-size: 1rem;
+            padding: 16px;
+            border: 1.5px solid var(--accent);
+            border-radius: 999px;
+            background: transparent;
+            color: var(--accent);
+            font-family: var(--font);
+            font-size: 0.98rem;
             font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
-            box-shadow: var(--shadow-md);
             letter-spacing: 0.3px;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s, transform 0.15s, box-shadow 0.2s;
         }
         .btn-submit:active {
+            background: var(--accent);
+            color: #06201A;
             transform: scale(0.98);
+            box-shadow: 0 0 20px -2px var(--accent), 0 0 34px -6px var(--blue);
         }
         .btn-submit:disabled {
-            opacity: 0.65;
+            opacity: 0.5;
             cursor: not-allowed;
             transform: none;
         }
@@ -268,76 +210,60 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 60px 20px;
+            padding: 90px 24px;
         }
         .spinner {
-            width: 36px;
-            height: 36px;
-            border: 3px solid var(--border);
-            border-top-color: var(--brand-light);
+            width: 30px; height: 30px;
+            border: 2.5px solid var(--rule);
+            border-top-color: var(--accent);
             border-radius: 50%;
             animation: spin 0.7s linear infinite;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
         .loader-text {
             margin-top: 14px;
-            font-size: 0.85rem;
-            color: var(--text-muted);
+            font-size: 0.8rem;
+            color: var(--ink-faint);
+            font-weight: 300;
         }
 
-        /* ─── Status Cards (suspended / not registered) ─── */
+        /* ─── Status Cards ─── */
         .status-card {
-            background: var(--surface);
-            border-radius: var(--radius-lg);
-            padding: 28px 24px;
-            margin-top: 24px;
-            box-shadow: var(--shadow-lg);
+            margin: 30px 24px 0;
+            padding: 30px 20px;
             text-align: center;
+            border: 1px solid var(--rule);
+            border-radius: 20px;
             animation: fadeUp 0.4s ease both;
         }
-        .status-card.danger  { border-top: 4px solid var(--danger); }
-        .status-card.warning { border-top: 4px solid var(--warning); }
-
-        .status-icon {
-            font-size: 2rem;
-            margin-bottom: 12px;
-        }
-        .status-title {
-            font-size: 1.05rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
+        .status-card.danger  { border-color: rgba(255,107,107,0.4); }
+        .status-card.warning { border-color: rgba(242,184,75,0.4); }
+        .status-icon { font-size: 1.8rem; margin-bottom: 12px; }
+        .status-title { font-size: 1.02rem; font-weight: 600; margin-bottom: 8px; }
         .status-title.danger  { color: var(--danger); }
         .status-title.warning { color: var(--warning); }
-
-        .status-desc {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
+        .status-desc { font-size: 0.85rem; color: var(--ink-soft); font-weight: 300; line-height: 1.65; }
 
         .uid-box {
-            background: var(--bg);
-            border: 1.5px dashed var(--brand-light);
-            border-radius: var(--radius-sm);
+            background: rgba(16,37,32,0.045);
+            border: 1px dashed var(--rule);
+            border-radius: 10px;
             padding: 14px;
             margin: 18px 0;
             word-break: break-all;
             font-family: 'SF Mono', 'Fira Code', monospace;
-            font-size: 0.85rem;
-            color: var(--brand-dark);
-            font-weight: 500;
-            letter-spacing: 0.5px;
+            font-size: 0.8rem;
+            color: var(--accent);
         }
         .btn-copy {
             display: block;
             width: 100%;
             padding: 12px;
-            border: none;
-            border-radius: var(--radius-sm);
-            background: var(--warning);
-            color: #fff;
-            font-family: inherit;
+            border: 1.5px solid var(--warning);
+            border-radius: 999px;
+            background: transparent;
+            color: var(--warning);
+            font-family: var(--font);
             font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
@@ -348,26 +274,43 @@
         .error-text {
             text-align: center;
             color: var(--danger);
-            font-weight: 600;
+            font-weight: 500;
             padding: 40px 20px;
             font-size: 0.9rem;
         }
 
-        /* ─── Utility ─── */
+        /* ─── Footer band ─── */
+        .footer-band {
+            background: var(--bg-alt);
+            margin-top: auto;
+            padding: 32px 24px 36px;
+            text-align: center;
+        }
+        .footer-band-text {
+            font-size: 0.78rem;
+            color: var(--ink-faint);
+            font-weight: 300;
+        }
+        .footer-band-brand {
+            font-size: 0.78rem;
+            color: var(--accent);
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
         .hidden { display: none !important; }
 
-        /* ─── Reduce motion ─── */
         @media (prefers-reduced-motion: reduce) {
-            .form-section, .status-card { animation: none; }
+            .section, .status-card { animation: none; }
             .btn-submit { transition: none; }
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <div class="header-logo">TAXI EV</div>
-        <div class="header-sub">CHIANG MAI</div>
+    <div class="app-header">
+        <div class="app-logo">TAXI<span class="hi">EV</span></div>
+        <div class="app-header-dot">CHIANG MAI</div>
     </div>
 
     <div class="container">
@@ -381,21 +324,40 @@
         <!-- Main Form -->
         <form id="reportForm" class="hidden">
 
-            <!-- Driver Card -->
-            <div class="driver-card">
-                <div class="driver-name" id="driverName">...</div>
-                <div class="driver-badges">
-                    <span class="badge badge-plate" id="driverPlate">...</span>
-                    <span class="badge badge-type" id="driverType">...</span>
+            <input type="hidden" id="uid">
+            <input type="hidden" id="name">
+            <input type="hidden" id="plate">
+            <input type="hidden" id="type">
+
+            <!-- Hero: personalized greeting (only rendered once data is loaded, same as rest of form) -->
+            <div class="hero">
+                <div class="confetti" aria-hidden="true">
+                    <span style="width:7px;height:7px;top:6px;left:18px;background:var(--accent);"></span>
+                    <span style="width:4px;height:4px;top:34px;left:52px;background:var(--orange);"></span>
+                    <span style="width:5px;height:5px;top:2px;left:88px;background:var(--blue);"></span>
+                    <span style="width:9px;height:9px;top:46px;right:14px;background:var(--accent);opacity:0.6;"></span>
+                    <span style="width:4px;height:4px;top:8px;right:46px;background:var(--orange);"></span>
+                    <span style="width:6px;height:6px;top:60px;right:70px;background:var(--blue);"></span>
+                    <span style="width:3px;height:3px;top:78px;left:30px;background:var(--purple);"></span>
+                    <span style="width:5px;height:5px;top:90px;right:20px;background:var(--accent);"></span>
+                    <span style="width:5px;height:5px;top:20px;left:130px;background:var(--purple);"></span>
+                    <span style="width:4px;height:4px;top:70px;left:6px;background:var(--blue);"></span>
                 </div>
-                <input type="hidden" id="uid">
-                <input type="hidden" id="name">
-                <input type="hidden" id="plate">
-                <input type="hidden" id="type">
+                <div class="hero-content">
+                    <div class="hero-title">
+                        สวัสดีครับ<br>
+                        คุณ<span class="accent-name" id="driverName">...</span><br>
+                        ส่งยอดรายวันได้เลย
+                    </div>
+                    <div class="hero-caption">
+                        ทะเบียน <span class="k" style="color:var(--blue);" id="driverPlate">...</span><br>
+                        ประเภทงาน <span class="k" style="color:var(--orange);" id="driverType">...</span>
+                    </div>
+                </div>
             </div>
 
             <!-- Date -->
-            <div class="form-section">
+            <div class="section c-purple" style="border-top:none; padding-top:30px;">
                 <div class="input-group">
                     <label class="input-label" for="report_date">วันที่ส่งยอด</label>
                     <input type="date" id="report_date" class="input-field" required>
@@ -403,11 +365,9 @@
             </div>
 
             <!-- App Income -->
-            <div class="form-section">
-                <div class="section-header">
-                    <div class="section-icon app">📱</div>
-                    <div class="section-title">รายได้จากแอปพลิเคชัน</div>
-                </div>
+            <div class="section c-teal">
+                <div class="section-eyebrow">01 — APPLICATION</div>
+                <div class="section-title">รายได้จากแอปพลิเคชัน</div>
                 <div class="input-grid">
                     <div class="input-group">
                         <label class="input-label" for="grab">Grab</label>
@@ -433,11 +393,9 @@
             </div>
 
             <!-- Outside / Charter -->
-            <div class="form-section">
-                <div class="section-header">
-                    <div class="section-icon outside">🚕</div>
-                    <div class="section-title">งานนอกระบบ / เหมา</div>
-                </div>
+            <div class="section c-blue">
+                <div class="section-eyebrow">02 — CHARTER</div>
+                <div class="section-title">งานนอกระบบ / เหมา</div>
                 <div class="input-grid">
                     <div class="input-group">
                         <label class="input-label" for="outside">งานนอก</label>
@@ -455,19 +413,26 @@
             </div>
 
             <!-- Airport (conditional) -->
-            <div class="form-section hidden" id="airportSection">
-                <div class="section-header">
-                    <div class="section-icon airport">✈️</div>
-                    <div class="section-title">งานสนามบิน</div>
-                </div>
-                <div class="input-group">
-                    <label class="input-label" for="airport_calc">ยอดสนามบิน (ใส่สูตรได้)</label>
-                    <input type="text" id="airport_calc" class="input-field" placeholder="เช่น 150*6+200*3+350">
+            <div class="section c-orange hidden" id="airportSection">
+                <div class="section-eyebrow">03 — AIRPORT</div>
+                <div class="section-title">งานสนามบิน</div>
+                <div class="input-grid">
+                    <div class="input-group full-width">
+                        <label class="input-label" for="airport_calc">ยอดสนามบิน (ใส่สูตรได้)</label>
+                        <input type="text" id="airport_calc" class="input-field" placeholder="เช่น 150*6+200*3+350">
+                    </div>
                 </div>
             </div>
 
-            <button type="submit" id="btnSubmit" class="btn-submit">ส่งยอดรายวัน</button>
+            <div class="submit-wrap">
+                <button type="submit" id="btnSubmit" class="btn-submit">ส่งยอดรายวัน</button>
+            </div>
         </form>
+    </div>
+
+    <div class="footer-band">
+        <div class="footer-band-text">ขอบคุณที่ขับกับเรา</div>
+        <div class="footer-band-brand">TAXI EV · CHIANG MAI</div>
     </div>
 
     <script>
