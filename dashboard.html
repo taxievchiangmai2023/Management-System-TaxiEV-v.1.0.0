@@ -6,124 +6,114 @@
     <title>สรุปผลงาน - TaxiEV</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
-            --brand-dark: #13444B;
-            --brand-mid: #1A5C65;
-            --brand-light: #4EB1B3;
-            --brand-pale: #E8F6F6;
-            --bg: #F0F4F4;
-            --surface: #FFFFFF;
-            --text-primary: #1A2C2E;
-            --text-secondary: #5A7A7D;
-            --text-muted: #8FA8AB;
-            --border: #D8E4E5;
-            --warning: #E8A817;
-            --danger: #D94052;
-            --radius-sm: 10px;
-            --radius-md: 14px;
-            --radius-lg: 20px;
-            --shadow-sm: 0 1px 3px rgba(19,68,75,0.06);
-            --shadow-md: 0 4px 12px rgba(19,68,75,0.08);
-            --shadow-lg: 0 8px 24px rgba(19,68,75,0.10);
+            --bg: #FAFCFB;
+            --ink: #102520;
+            --ink-soft: #4E6B67;
+            --ink-faint: #8AA39F;
+            --accent: #1CA37D;
+            --blue: #3E6FE0;
+            --orange: #E07A1F;
+            --purple: #8862E0;
+            --danger: #D9433B;
+            --warning: #C2790E;
+            --rule: rgba(16,37,32,0.14);
+            --font: 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         body {
-            background-color: var(--bg);
-            font-family: 'Noto Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
-            color: var(--text-primary);
+            background: var(--bg);
+            color: var(--ink);
+            font-family: var(--font);
+            font-weight: 300;
             -webkit-font-smoothing: antialiased;
             padding-bottom: 40px;
+            min-height: 100vh;
         }
 
         /* ─── Header ─── */
+        .app-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 24px 0;
+        }
+        .app-logo { font-weight: 700; font-size: 1rem; letter-spacing: 0.5px; }
+        .app-logo .hi {
+            background: linear-gradient(100deg, var(--accent), var(--blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .app-header-dot {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.68rem;
+            color: var(--ink-faint);
+            letter-spacing: 1px;
+        }
+        .app-header-dot::before {
+            content: '';
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 6px var(--accent);
+        }
+
+        /* ─── Hero: net income ─── */
         .header {
-            background: linear-gradient(160deg, var(--brand-dark) 0%, var(--brand-mid) 50%, var(--brand-light) 100%);
-            color: #fff;
-            padding: 28px 24px 52px;
-            text-align: center;
             position: relative;
+            padding: 18px 24px 26px;
+            text-align: center;
             overflow: hidden;
         }
-        .header::before {
-            content: '';
-            position: absolute;
-            top: -60%;
-            right: -20%;
-            width: 280px;
-            height: 280px;
-            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
-            border-radius: 50%;
-        }
-        .header::after {
-            content: '';
-            position: absolute;
-            bottom: -40%;
-            left: -15%;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
-            border-radius: 50%;
-        }
+        .confetti { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+        .confetti span { position: absolute; border-radius: 50%; opacity: 0.8; }
+        .header-inner { position: relative; z-index: 1; }
         .header-label {
-            font-size: 0.78rem;
+            font-size: 0.8rem;
             font-weight: 400;
-            opacity: 0.7;
-            position: relative;
-            z-index: 1;
+            color: var(--ink-faint);
         }
         .header-amount {
-            font-size: 2.6rem;
+            font-size: 2.5rem;
             font-weight: 700;
             letter-spacing: -1px;
-            margin: 6px 0 12px;
-            position: relative;
-            z-index: 1;
+            margin: 6px 0 16px;
+            color: var(--accent);
         }
         .header-amount .currency {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             font-weight: 500;
-            opacity: 0.8;
+            color: var(--ink-faint);
             margin-left: 4px;
         }
-        .month-picker {
-            position: relative;
-            z-index: 1;
-            display: inline-block;
-        }
+        .month-picker { display: inline-block; }
         .month-picker input {
-            background: rgba(255,255,255,0.15);
-            border: 1px solid rgba(255,255,255,0.3);
-            color: #fff;
-            border-radius: var(--radius-sm);
-            padding: 8px 16px;
+            background: transparent;
+            border: none;
+            border-bottom: 1.5px solid var(--rule);
+            color: var(--ink);
+            padding: 6px 4px 8px;
             font-family: inherit;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: 500;
             text-align: center;
             outline: none;
             -webkit-appearance: none;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: border-color 0.2s;
         }
-        .month-picker input:focus {
-            background: rgba(255,255,255,0.25);
-        }
-        .month-picker input::-webkit-calendar-picker-indicator {
-            filter: invert(1);
-            cursor: pointer;
-        }
+        .month-picker input:focus { border-bottom-color: var(--accent); }
 
         /* ─── Container ─── */
-        .container {
-            max-width: 480px;
-            margin: 0 auto;
-            padding: 0 16px;
-        }
+        .container { max-width: 480px; margin: 0 auto; padding: 0 24px; }
 
         /* ─── Loader ─── */
         .loader-wrap {
@@ -131,170 +121,122 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 60px 20px;
+            padding: 70px 20px;
         }
         .spinner {
-            width: 36px;
-            height: 36px;
-            border: 3px solid var(--border);
-            border-top-color: var(--brand-light);
+            width: 30px; height: 30px;
+            border: 2.5px solid var(--rule);
+            border-top-color: var(--accent);
             border-radius: 50%;
             animation: spin 0.7s linear infinite;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
         .loader-text {
             margin-top: 14px;
-            font-size: 0.85rem;
-            color: var(--text-muted);
+            font-size: 0.8rem;
+            color: var(--ink-faint);
+            font-weight: 300;
         }
 
-        /* ─── Leave Card ─── */
-        .leave-card {
-            background: var(--surface);
-            border-radius: var(--radius-lg);
-            padding: 18px 20px;
-            margin-top: -28px;
-            position: relative;
-            z-index: 10;
-            box-shadow: var(--shadow-lg);
+        /* ─── Leave row (cardless) ─── */
+        .leave-row {
+            padding: 20px 0;
+            border-top: 1px solid var(--rule);
+            border-bottom: 1px solid var(--rule);
             display: flex;
             justify-content: space-between;
             align-items: center;
             animation: fadeUp 0.4s ease both;
         }
-        .leave-card-label {
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-        }
-        .leave-card-value {
-            display: flex;
-            align-items: baseline;
-            gap: 4px;
-        }
-        .leave-number {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: var(--danger);
-            line-height: 1;
-        }
-        .leave-unit {
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: var(--danger);
-            opacity: 0.8;
-        }
+        .leave-card-label { font-size: 0.85rem; font-weight: 400; color: var(--ink-soft); }
+        .leave-card-value { display: flex; align-items: baseline; gap: 4px; }
+        .leave-number { font-size: 1.5rem; font-weight: 700; color: var(--danger); line-height: 1; }
+        .leave-unit { font-size: 0.8rem; font-weight: 500; color: var(--danger); opacity: 0.85; }
 
-        /* ─── Weekly Card ─── */
-        .weekly-card {
-            background: var(--surface);
-            border-radius: var(--radius-md);
-            padding: 18px;
-            margin-top: 14px;
-            box-shadow: var(--shadow-sm);
+        /* ─── Weekly section (cardless) ─── */
+        .weekly-section {
+            padding: 24px 0;
             animation: fadeUp 0.4s ease both;
-            animation-delay: 0.08s;
+            animation-delay: 0.06s;
         }
-        .weekly-title {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-        .weekly-title-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: var(--radius-sm);
-            background: var(--brand-pale);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.95rem;
-            flex-shrink: 0;
-        }
-        .weekly-title-text {
-            font-size: 0.85rem;
+        .section-eyebrow {
+            font-size: 0.68rem;
+            color: var(--accent);
+            letter-spacing: 2px;
             font-weight: 600;
-            color: var(--text-primary);
+            margin-bottom: 4px;
         }
+        .weekly-title-text { font-size: 1rem; font-weight: 600; margin-bottom: 8px; }
 
         .week-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 11px 0;
-            border-bottom: 1px solid var(--bg);
+            padding: 13px 0;
+            border-bottom: 1px solid var(--rule);
         }
-        .week-row:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-        .week-row:first-of-type {
-            padding-top: 0;
-        }
-        .week-label {
-            font-size: 0.82rem;
-            color: var(--text-secondary);
-            font-weight: 400;
-        }
-        .week-value {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--brand-light);
-        }
+        .week-row:last-child { border-bottom: none; }
+        .week-label { font-size: 0.83rem; color: var(--ink-soft); font-weight: 300; }
+        .week-value { font-size: 0.92rem; font-weight: 600; color: var(--accent); }
 
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(12px); }
+            from { opacity: 0; transform: translateY(10px); }
             to   { opacity: 1; transform: translateY(0); }
         }
 
-        /* ─── Status Cards ─── */
+        /* ─── Status Cards (border only) ─── */
         .status-card {
-            background: var(--surface);
-            border-radius: var(--radius-lg);
-            padding: 28px 24px;
+            border: 1px solid var(--rule);
+            border-radius: 20px;
+            padding: 30px 22px;
             margin-top: 24px;
-            box-shadow: var(--shadow-lg);
             text-align: center;
             animation: fadeUp 0.4s ease both;
         }
-        .status-card.danger  { border-top: 4px solid var(--danger); }
-        .status-card.warning { border-top: 4px solid var(--warning); }
-
-        .status-icon { font-size: 2rem; margin-bottom: 12px; }
-        .status-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+        .status-card.danger  { border-color: rgba(217,67,59,0.35); }
+        .status-card.warning { border-color: rgba(194,121,14,0.35); }
+        .status-icon { font-size: 1.8rem; margin-bottom: 12px; }
+        .status-title { font-size: 1.02rem; font-weight: 600; margin-bottom: 8px; }
         .status-title.danger  { color: var(--danger); }
         .status-title.warning { color: var(--warning); }
-        .status-desc {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            line-height: 1.7;
-        }
-        .status-desc strong { color: var(--brand-dark); }
+        .status-desc { font-size: 0.85rem; color: var(--ink-soft); font-weight: 300; line-height: 1.7; }
+        .status-desc strong { color: var(--ink); font-weight: 600; }
         .error-text {
             text-align: center;
             color: var(--danger);
-            font-weight: 600;
+            font-weight: 500;
             padding: 40px 20px;
             font-size: 0.9rem;
         }
 
-        /* ─── Utility ─── */
         .hidden { display: none !important; }
 
         @media (prefers-reduced-motion: reduce) {
-            .leave-card, .weekly-card, .status-card { animation: none; }
+            .leave-row, .weekly-section, .status-card { animation: none; }
         }
     </style>
 </head>
 <body>
 
+    <div class="app-header">
+        <div class="app-logo">TAXI<span class="hi">EV</span></div>
+        <div class="app-header-dot">CHIANG MAI</div>
+    </div>
+
     <!-- Header -->
     <div class="header" id="dashboardHeader">
-        <div class="header-label">รายได้สุทธิประจำเดือน</div>
-        <div class="header-amount" id="totalNet">0 <span class="currency">฿</span></div>
-        <div class="month-picker">
-            <input type="month" id="monthSelector" onchange="fetchSummary()">
+        <div class="confetti" aria-hidden="true">
+            <span style="width:6px;height:6px;top:0px;left:26px;background:var(--accent);"></span>
+            <span style="width:4px;height:4px;top:20px;left:64px;background:var(--orange);"></span>
+            <span style="width:8px;height:8px;top:4px;right:22px;background:var(--blue);opacity:0.5;"></span>
+            <span style="width:4px;height:4px;top:34px;right:58px;background:var(--purple);"></span>
+        </div>
+        <div class="header-inner">
+            <div class="header-label">รายได้สุทธิประจำเดือน</div>
+            <div class="header-amount" id="totalNet">0 <span class="currency">฿</span></div>
+            <div class="month-picker">
+                <input type="month" id="monthSelector" onchange="fetchSummary()">
+            </div>
         </div>
     </div>
 
@@ -309,7 +251,7 @@
         <div class="container">
 
             <!-- Leave Days -->
-            <div class="leave-card">
+            <div class="leave-row">
                 <span class="leave-card-label">จำนวนวันที่หยุดพักผ่อน</span>
                 <div class="leave-card-value">
                     <span class="leave-number" id="leaveDays">0</span>
@@ -318,11 +260,9 @@
             </div>
 
             <!-- Weekly Breakdown -->
-            <div class="weekly-card">
-                <div class="weekly-title">
-                    <div class="weekly-title-icon">📊</div>
-                    <div class="weekly-title-text">สรุปรายรับสุทธิ (รายสัปดาห์)</div>
-                </div>
+            <div class="weekly-section">
+                <div class="section-eyebrow">BREAKDOWN</div>
+                <div class="weekly-title-text">สรุปรายรับสุทธิ (รายสัปดาห์)</div>
                 <div class="week-row">
                     <span class="week-label">สัปดาห์ที่ 1 (วันที่ 1–7)</span>
                     <span class="week-value" id="w1">0 ฿</span>
