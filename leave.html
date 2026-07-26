@@ -6,311 +6,209 @@
     <title>แจ้งหยุดงาน - TaxiEV</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
-            --brand-dark: #13444B;
-            --brand-mid: #1A5C65;
-            --brand-light: #4EB1B3;
-            --brand-pale: #E8F6F6;
-            --bg: #F0F4F4;
-            --surface: #FFFFFF;
-            --text-primary: #1A2C2E;
-            --text-secondary: #5A7A7D;
-            --text-muted: #8FA8AB;
-            --border: #D8E4E5;
-            --warning: #E8A817;
-            --danger: #D94052;
-            --danger-mid: #C0384A;
-            --radius-sm: 10px;
-            --radius-md: 14px;
-            --radius-lg: 20px;
-            --shadow-sm: 0 1px 3px rgba(19,68,75,0.06);
-            --shadow-md: 0 4px 12px rgba(19,68,75,0.08);
-            --shadow-lg: 0 8px 24px rgba(19,68,75,0.10);
+            --bg: #FAFCFB;
+            --ink: #102520;
+            --ink-soft: #4E6B67;
+            --ink-faint: #8AA39F;
+            --accent: #1CA37D;
+            --blue: #3E6FE0;
+            --orange: #E07A1F;
+            --purple: #8862E0;
+            --danger: #D9433B;
+            --warning: #C2790E;
+            --rule: rgba(16,37,32,0.14);
+            --font: 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         body {
-            background-color: var(--bg);
-            font-family: 'Noto Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
-            color: var(--text-primary);
+            background: var(--bg);
+            color: var(--ink);
+            font-family: var(--font);
+            font-weight: 300;
             -webkit-font-smoothing: antialiased;
             padding-bottom: 48px;
         }
 
         /* ─── Header ─── */
-        .header {
-            background: linear-gradient(160deg, var(--brand-dark) 0%, var(--brand-mid) 50%, var(--brand-light) 100%);
-            color: #fff;
-            padding: 28px 24px 48px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
+        .app-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 24px 0;
         }
-        .header::before {
-            content: '';
-            position: absolute;
-            top: -60%;
-            right: -20%;
-            width: 280px;
-            height: 280px;
-            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
-            border-radius: 50%;
+        .app-logo { font-weight: 700; font-size: 1rem; letter-spacing: 0.5px; }
+        .app-logo .hi {
+            background: linear-gradient(100deg, var(--accent), var(--blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .header::after {
-            content: '';
-            position: absolute;
-            bottom: -40%;
-            left: -15%;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
-            border-radius: 50%;
+        .app-header-dot {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 0.68rem; color: var(--ink-faint); letter-spacing: 1px;
         }
-        .header-title {
-            font-size: 1.15rem;
-            font-weight: 700;
-            position: relative;
-            z-index: 1;
-        }
-        .header-sub {
-            font-size: 0.78rem;
-            font-weight: 400;
-            opacity: 0.7;
-            margin-top: 4px;
-            position: relative;
-            z-index: 1;
+        .app-header-dot::before {
+            content: ''; width: 6px; height: 6px; border-radius: 50%;
+            background: var(--accent); box-shadow: 0 0 6px var(--accent);
         }
 
         /* ─── Container ─── */
-        .container {
-            max-width: 480px;
-            margin: 0 auto;
-            padding: 0 16px;
-        }
+        .container { max-width: 480px; margin: 0 auto; padding: 0 24px; }
 
         /* ─── Loader ─── */
-        .loader-wrap {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 60px 20px;
-        }
+        .loader-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 70px 20px; }
         .spinner {
-            width: 36px;
-            height: 36px;
-            border: 3px solid var(--border);
-            border-top-color: var(--danger);
+            width: 30px; height: 30px;
+            border: 2.5px solid var(--rule);
+            border-top-color: var(--accent);
             border-radius: 50%;
             animation: spin 0.7s linear infinite;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* ─── Driver Card ─── */
-        .driver-card {
-            background: var(--surface);
-            border-radius: var(--radius-lg);
-            padding: 20px;
-            margin-top: -28px;
-            position: relative;
-            z-index: 10;
-            box-shadow: var(--shadow-lg);
-            text-align: center;
-            animation: fadeUp 0.4s ease both;
-        }
-        .driver-name {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 4px;
-        }
-        .driver-plate {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
+        /* ─── Hero (personalized greeting) ─── */
+        .hero { position: relative; padding: 18px 24px 20px; overflow: hidden; }
+        .confetti { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+        .confetti span { position: absolute; border-radius: 50%; opacity: 0.8; }
+        .hero-content { position: relative; z-index: 1; }
+        .hero-title { font-size: 1.5rem; font-weight: 600; line-height: 1.28; }
+        .hero-title .accent { color: var(--accent); font-weight: 700; }
+        .hero-caption { margin-top: 10px; font-size: 0.8rem; color: var(--ink-soft); font-weight: 300; }
+        .hero-caption .k { color: var(--accent); font-weight: 500; }
 
-        /* ─── Form Sections ─── */
-        .form-section {
-            background: var(--surface);
-            border-radius: var(--radius-md);
-            padding: 18px;
-            margin-top: 14px;
-            box-shadow: var(--shadow-sm);
-            animation: fadeUp 0.4s ease both;
+        /* ─── Form Sections (cardless) ─── */
+        .section { padding: 24px 0; border-top: 1px solid var(--rule); animation: fadeUp 0.4s ease both; }
+        .section:first-of-type { border-top: 1px solid var(--rule); }
+        .section-label {
+            font-size: 0.68rem;
+            letter-spacing: 2px;
+            font-weight: 600;
+            margin-bottom: 12px;
         }
-        .form-section:nth-child(2) { animation-delay: 0.05s; }
-        .form-section:nth-child(3) { animation-delay: 0.1s; }
-        .form-section:nth-child(4) { animation-delay: 0.15s; }
+        .section.c-danger .section-label { color: var(--accent); }
+        .section.c-orange .section-label { color: var(--orange); }
+        .section.c-blue   .section-label { color: var(--blue); }
 
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(12px); }
+            from { opacity: 0; transform: translateY(10px); }
             to   { opacity: 1; transform: translateY(0); }
         }
 
-        /* ─── Radio Toggle ─── */
-        .toggle-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-        }
-        .toggle-option {
-            position: relative;
-        }
-        .toggle-option input[type="radio"] {
-            position: absolute;
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
+        /* ─── Radio Toggle (outline pill segmented control) ─── */
+        .toggle-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .toggle-option { position: relative; }
+        .toggle-option input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
         .toggle-label {
             display: block;
-            padding: 10px 14px;
-            border-radius: var(--radius-sm);
-            border: 1.5px solid var(--border);
-            background: var(--bg);
+            padding: 11px 14px;
+            border-radius: 999px;
+            border: 1.5px solid var(--rule);
+            background: transparent;
             text-align: center;
             font-size: 0.85rem;
             font-weight: 500;
-            color: var(--text-secondary);
+            color: var(--ink-soft);
             cursor: pointer;
             transition: all 0.2s;
         }
         .toggle-option input[type="radio"]:checked + .toggle-label {
-            border-color: var(--brand-light);
-            background: var(--brand-pale);
-            color: var(--brand-dark);
+            border-color: var(--accent);
+            background: var(--accent);
+            color: #fff;
             font-weight: 600;
         }
         .toggle-option input[type="radio"]:focus-visible + .toggle-label {
-            box-shadow: 0 0 0 3px rgba(78,177,179,0.25);
+            box-shadow: 0 0 0 3px rgba(28,163,125,0.2);
         }
 
-        .section-label {
-            font-size: 0.78rem;
-            font-weight: 500;
-            color: var(--text-muted);
-            margin-bottom: 10px;
-            letter-spacing: 0.3px;
-        }
-
-        /* ─── Inputs ─── */
+        /* ─── Inputs (underline) ─── */
         .input-label {
             display: block;
             font-size: 0.72rem;
-            font-weight: 500;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-            letter-spacing: 0.3px;
+            font-weight: 400;
+            color: var(--ink-faint);
+            margin-bottom: 6px;
         }
         .input-field {
             width: 100%;
-            padding: 10px 12px;
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius-sm);
-            background: var(--bg);
-            font-family: inherit;
-            font-size: 0.95rem;
+            padding: 6px 2px 9px;
+            border: none;
+            border-bottom: 1px solid var(--rule);
+            background: transparent;
+            font-family: var(--font);
+            font-size: 1rem;
             font-weight: 500;
-            color: var(--text-primary);
-            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+            color: var(--ink);
             outline: none;
             -webkit-appearance: none;
+            transition: border-color 0.2s;
         }
-        .input-field::placeholder {
-            color: var(--text-muted);
-            font-weight: 400;
-        }
-        .input-field:focus {
-            border-color: var(--brand-light);
-            background: #fff;
-            box-shadow: 0 0 0 3px rgba(78,177,179,0.12);
-        }
-        .input-hint {
-            font-size: 0.72rem;
-            color: var(--text-muted);
-            font-weight: 400;
-            margin-left: 4px;
-        }
+        .input-field::placeholder { color: var(--ink-faint); font-weight: 300; }
+        .section.c-orange .input-field:focus { border-bottom-color: var(--orange); }
+        .section.c-blue   .input-field:focus { border-bottom-color: var(--blue); }
+        .input-hint { font-size: 0.72rem; color: var(--ink-faint); font-weight: 300; }
 
-        .date-row {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
-            transition: grid-template-columns 0.3s;
-        }
-        .date-row.multi {
-            grid-template-columns: 1fr 1fr;
-        }
+        .date-row { display: grid; grid-template-columns: 1fr; gap: 20px; transition: grid-template-columns 0.3s; }
+        .date-row.multi { grid-template-columns: 1fr 1fr; }
 
         /* ─── Submit Button ─── */
         .btn-submit {
             display: block;
             width: 100%;
-            padding: 14px;
-            margin-top: 18px;
-            border: none;
-            border-radius: var(--radius-md);
-            background: linear-gradient(135deg, var(--danger), var(--danger-mid));
-            color: #fff;
-            font-family: inherit;
-            font-size: 1rem;
+            padding: 16px;
+            margin-top: 26px;
+            border: 1.5px solid var(--accent);
+            border-radius: 999px;
+            background: transparent;
+            color: var(--accent);
+            font-family: var(--font);
+            font-size: 0.98rem;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
-            box-shadow: var(--shadow-md);
+            transition: background 0.2s, color 0.2s, transform 0.15s;
             animation: fadeUp 0.4s ease both;
-            animation-delay: 0.2s;
+            animation-delay: 0.15s;
         }
-        .btn-submit:active { transform: scale(0.98); }
-        .btn-submit:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
+        .btn-submit:active { background: var(--accent); color: #fff; transform: scale(0.98); }
+        .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
         /* ─── Status Cards ─── */
         .status-card {
-            background: var(--surface);
-            border-radius: var(--radius-lg);
-            padding: 28px 24px;
+            border: 1px solid var(--rule);
+            border-radius: 20px;
+            padding: 30px 22px;
             margin-top: 24px;
-            box-shadow: var(--shadow-lg);
             text-align: center;
             animation: fadeUp 0.4s ease both;
         }
-        .status-card.danger  { border-top: 4px solid var(--danger); }
-        .status-card.warning { border-top: 4px solid var(--warning); }
-        .status-icon { font-size: 2rem; margin-bottom: 12px; }
-        .status-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+        .status-card.danger  { border-color: rgba(217,67,59,0.35); }
+        .status-card.warning { border-color: rgba(194,121,14,0.35); }
+        .status-icon { font-size: 1.8rem; margin-bottom: 12px; }
+        .status-title { font-size: 1.02rem; font-weight: 600; margin-bottom: 8px; }
         .status-title.danger  { color: var(--danger); }
         .status-title.warning { color: var(--warning); }
-        .status-desc {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            line-height: 1.7;
-        }
-        .status-desc strong { color: var(--brand-dark); }
-        .error-text {
-            text-align: center;
-            color: var(--danger);
-            font-weight: 600;
-            padding: 40px 20px;
-            font-size: 0.9rem;
-        }
+        .status-desc { font-size: 0.85rem; color: var(--ink-soft); font-weight: 300; line-height: 1.7; }
+        .status-desc strong { color: var(--ink); font-weight: 600; }
+        .error-text { text-align: center; color: var(--danger); font-weight: 500; padding: 40px 20px; font-size: 0.9rem; }
 
-        /* ─── Utility ─── */
         .hidden { display: none !important; }
 
         @media (prefers-reduced-motion: reduce) {
-            .driver-card, .form-section, .btn-submit, .status-card { animation: none; }
+            .section, .btn-submit, .status-card { animation: none; }
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <div class="header-title">แจ้งหยุดงาน / ลาพัก</div>
-        <div class="header-sub">ข้อมูลจะถูกบันทึกลงปฏิทินอัตโนมัติ</div>
+    <div class="app-header">
+        <div class="app-logo">TAXI<span class="hi">EV</span></div>
+        <div class="app-header-dot">CHIANG MAI</div>
     </div>
 
     <div class="container">
@@ -323,10 +221,20 @@
         <!-- Leave Form -->
         <div id="leaveForm" class="hidden">
 
-            <!-- Driver Card -->
-            <div class="driver-card">
-                <div class="driver-name" id="driverName">...</div>
-                <div class="driver-plate" id="driverPlate">...</div>
+            <div class="hero">
+                <div class="confetti" aria-hidden="true">
+                    <span style="width:6px;height:6px;top:2px;left:22px;background:var(--accent);"></span>
+                    <span style="width:4px;height:4px;top:26px;left:56px;background:var(--orange);"></span>
+                    <span style="width:8px;height:8px;top:6px;right:18px;background:var(--blue);opacity:0.5;"></span>
+                    <span style="width:4px;height:4px;top:38px;right:52px;background:var(--purple);"></span>
+                </div>
+                <div class="hero-content">
+                    <div class="hero-title">แจ้ง<span class="accent">หยุดงาน</span> / ลาพัก</div>
+                    <div class="hero-caption">
+                        คุณ <span class="k" id="driverName">...</span><br>
+                        ทะเบียน <span class="k" id="driverPlate">...</span> · บันทึกลงปฏิทินอัตโนมัติ
+                    </div>
+                </div>
                 <input type="hidden" id="uid">
                 <input type="hidden" id="name">
                 <input type="hidden" id="plate">
@@ -336,7 +244,7 @@
             <form id="form">
 
                 <!-- Leave Type -->
-                <div class="form-section">
+                <div class="section c-danger">
                     <div class="section-label">รูปแบบการหยุด</div>
                     <div class="toggle-group">
                         <div class="toggle-option">
@@ -351,7 +259,8 @@
                 </div>
 
                 <!-- Dates -->
-                <div class="form-section">
+                <div class="section c-orange">
+                    <div class="section-label">ช่วงวันที่</div>
                     <div class="date-row" id="dateRow">
                         <div>
                             <label class="input-label" id="startDateLabel" for="start_date">วันที่หยุด</label>
@@ -365,7 +274,7 @@
                 </div>
 
                 <!-- Reason -->
-                <div class="form-section">
+                <div class="section c-blue">
                     <label class="input-label" for="leave_reason">เหตุผลการหยุด <span class="input-hint">(ไม่ระบุได้)</span></label>
                     <input type="text" id="leave_reason" class="input-field" placeholder="เช่น ธุระส่วนตัว, รถซ่อม">
                 </div>
