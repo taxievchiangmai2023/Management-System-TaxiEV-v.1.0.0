@@ -6,246 +6,176 @@
     <title>แนบสลิปและประวัติการส่งยอด - TaxiEV</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
-            --brand-dark: #13444B;
-            --brand-mid: #1A5C65;
-            --brand-light: #4EB1B3;
-            --brand-pale: #E8F6F6;
-            --bg: #F0F4F4;
+            --bg: #FAFCFB;
             --surface: #FFFFFF;
-            --text-primary: #1A2C2E;
-            --text-secondary: #5A7A7D;
-            --text-muted: #8FA8AB;
-            --border: #D8E4E5;
-            --warning: #E8A817;
-            --warning-bg: #FFF8E7;
-            --success: #1D9E6F;
-            --success-bg: #E6F7F0;
-            --danger: #D94052;
-            --danger-bg: #FDE8EA;
-            --info: #2B8CB0;
-            --info-bg: #E7F4F9;
-            --purple: #7C4DFF;
-            --purple-bg: #F3EEFF;
-            --radius-sm: 10px;
-            --radius-md: 14px;
-            --radius-lg: 20px;
-            --shadow-sm: 0 1px 3px rgba(19,68,75,0.06);
-            --shadow-md: 0 4px 12px rgba(19,68,75,0.08);
-            --shadow-lg: 0 8px 24px rgba(19,68,75,0.10);
+            --ink: #102520;
+            --ink-soft: #4E6B67;
+            --ink-faint: #8AA39F;
+            --accent: #1CA37D;
+            --blue: #3E6FE0;
+            --orange: #E07A1F;
+            --purple: #8862E0;
+            --danger: #D9433B;
+            --danger-tint: rgba(217,67,59,0.08);
+            --warning: #C2790E;
+            --warning-tint: rgba(194,121,14,0.08);
+            --rule: rgba(16,37,32,0.14);
+            --font: 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         body {
-            background-color: var(--bg);
-            font-family: 'Noto Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
-            color: var(--text-primary);
+            background: var(--bg);
+            color: var(--ink);
+            font-family: var(--font);
+            font-weight: 300;
             -webkit-font-smoothing: antialiased;
             padding-bottom: 40px;
         }
 
         /* ─── Header ─── */
-        .header {
-            background: linear-gradient(160deg, var(--brand-dark) 0%, var(--brand-mid) 50%, var(--brand-light) 100%);
-            color: #fff;
-            padding: 28px 24px 44px;
-            text-align: center;
+        .app-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 24px 0;
+        }
+        .app-logo { font-weight: 700; font-size: 1rem; letter-spacing: 0.5px; }
+        .app-logo .hi {
+            background: linear-gradient(100deg, var(--accent), var(--blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .app-header-dot {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 0.68rem; color: var(--ink-faint); letter-spacing: 1px;
+        }
+        .app-header-dot::before {
+            content: ''; width: 6px; height: 6px; border-radius: 50%;
+            background: var(--accent); box-shadow: 0 0 6px var(--accent);
+        }
+
+        .hero {
             position: relative;
+            padding: 18px 24px 20px;
             overflow: hidden;
         }
-        .header::before {
-            content: '';
-            position: absolute;
-            top: -60%;
-            right: -20%;
-            width: 280px;
-            height: 280px;
-            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
-            border-radius: 50%;
-        }
-        .header::after {
-            content: '';
-            position: absolute;
-            bottom: -40%;
-            left: -15%;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
-            border-radius: 50%;
-        }
-        .header-title {
-            font-size: 1.15rem;
-            font-weight: 700;
-            position: relative;
-            z-index: 1;
-        }
-        .header-sub {
-            font-size: 0.78rem;
-            font-weight: 400;
-            opacity: 0.7;
-            margin-top: 4px;
-            position: relative;
-            z-index: 1;
-        }
+        .confetti { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+        .confetti span { position: absolute; border-radius: 50%; opacity: 0.8; }
+        .hero-content { position: relative; z-index: 1; }
+        .hero-title { font-size: 1.5rem; font-weight: 600; }
+        .hero-title .accent { color: var(--accent); font-weight: 700; }
+        .hero-caption { margin-top: 6px; font-size: 0.8rem; color: var(--ink-soft); font-weight: 300; }
 
         /* ─── Container ─── */
-        .container {
-            max-width: 480px;
-            margin: 0 auto;
-            padding: 0 16px;
-        }
+        .container { max-width: 480px; margin: 0 auto; padding: 0 20px; }
 
         /* ─── Loader ─── */
-        .loader-wrap {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 60px 20px;
-        }
+        .loader-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; }
         .spinner {
-            width: 36px;
-            height: 36px;
-            border: 3px solid var(--border);
-            border-top-color: var(--brand-light);
+            width: 30px; height: 30px;
+            border: 2.5px solid var(--rule);
+            border-top-color: var(--accent);
             border-radius: 50%;
             animation: spin 0.7s linear infinite;
         }
-        .spinner-lg {
-            width: 48px;
-            height: 48px;
-            border-width: 4px;
-        }
+        .spinner-lg { width: 44px; height: 44px; border-width: 3.5px; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* ─── History Cards ─── */
+        /* ─── History Cards (cardless — underline list) ─── */
         .history-card {
-            background: var(--surface);
-            border-radius: var(--radius-md);
-            padding: 16px;
-            margin-top: 14px;
-            box-shadow: var(--shadow-sm);
+            padding: 18px 0;
+            border-bottom: 1px solid var(--rule);
             animation: fadeUp 0.3s ease both;
         }
-        .history-card:first-child { margin-top: -24px; position: relative; z-index: 10; box-shadow: var(--shadow-lg); }
+        .history-card:first-child { padding-top: 4px; }
 
         .card-top {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--bg);
+            gap: 10px;
         }
-        .card-date {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--brand-dark);
-            line-height: 1.3;
-        }
+        .card-date { font-size: 0.95rem; font-weight: 600; color: var(--ink); line-height: 1.3; }
         .badge-edit {
-            display: inline-block;
-            margin-top: 4px;
+            display: inline-flex;
+            margin-top: 5px;
             padding: 2px 8px;
-            border-radius: 6px;
-            font-size: 0.68rem;
+            border-radius: 20px;
+            font-size: 0.66rem;
             font-weight: 500;
-            background: var(--danger-bg);
+            border: 1px solid rgba(217,67,59,0.35);
             color: var(--danger);
         }
-        .card-actions {
-            display: flex;
-            gap: 6px;
-            flex-shrink: 0;
-        }
+        .card-actions { display: flex; gap: 6px; flex-shrink: 0; }
         .btn-action {
             display: inline-flex;
             align-items: center;
             gap: 4px;
-            padding: 6px 10px;
-            border: none;
-            border-radius: 8px;
+            padding: 6px 11px;
+            border-radius: 999px;
             font-family: inherit;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.15s, opacity 0.2s;
+            background: transparent;
+            transition: transform 0.15s, background 0.2s;
             white-space: nowrap;
         }
         .btn-action:active { transform: scale(0.96); }
-        .btn-action.slip {
-            background: var(--info-bg);
-            color: var(--info);
-        }
-        .btn-action.edit {
-            background: var(--warning-bg);
-            color: #8B6914;
-        }
+        .btn-action.slip { border: 1.5px solid var(--blue); color: var(--blue); }
+        .btn-action.slip:active { background: rgba(62,111,224,0.08); }
+        .btn-action.edit { border: 1.5px solid var(--orange); color: var(--orange); }
+        .btn-action.edit:active { background: rgba(224,122,31,0.08); }
 
         .card-stats {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 0;
-            margin-top: 12px;
+            margin-top: 14px;
         }
-        .stat-item {
-            text-align: center;
-            padding: 4px 0;
-        }
-        .stat-item:first-child {
-            border-right: 1px solid var(--bg);
-        }
-        .stat-label {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            margin-bottom: 2px;
-        }
-        .stat-value {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-        .stat-value.brand {
-            color: var(--brand-light);
-        }
+        .stat-item { text-align: center; padding: 4px 0; }
+        .stat-item:first-child { border-right: 1px solid var(--rule); }
+        .stat-label { font-size: 0.7rem; color: var(--ink-faint); margin-bottom: 2px; }
+        .stat-value { font-size: 1.05rem; font-weight: 700; color: var(--ink); }
+        .stat-value.brand { color: var(--accent); }
 
-        /* Warning alerts */
+        /* Alerts — left accent bar, no heavy fill */
         .card-alert {
-            margin-top: 10px;
-            padding: 8px 12px;
-            border-radius: 8px;
+            margin-top: 12px;
+            padding: 9px 12px;
+            border-radius: 6px;
             font-size: 0.78rem;
-            text-align: center;
-            line-height: 1.5;
+            line-height: 1.55;
         }
         .card-alert strong { font-weight: 600; }
         .card-alert.pending {
-            background: var(--bg);
-            border: 1.5px dashed var(--text-muted);
-            color: var(--text-secondary);
+            border: 1px dashed var(--rule);
+            color: var(--ink-soft);
         }
         .card-alert.error {
-            background: var(--danger-bg);
+            border-left: 3px solid var(--danger);
+            background: var(--danger-tint);
             color: var(--danger);
         }
         .card-alert.review {
-            background: var(--warning-bg);
-            color: #8B6914;
+            border-left: 3px solid var(--warning);
+            background: var(--warning-tint);
+            color: var(--warning);
         }
 
-        .empty-state {
-            text-align: center;
-            padding: 48px 20px;
-        }
-        .empty-icon { font-size: 3.5rem; margin-bottom: 12px; }
-        .empty-title { font-size: 1.05rem; font-weight: 700; color: var(--success); margin-bottom: 4px; }
-        .empty-desc { font-size: 0.85rem; color: var(--text-muted); }
+        .empty-state { text-align: center; padding: 56px 20px; }
+        .empty-icon { font-size: 3rem; margin-bottom: 12px; }
+        .empty-title { font-size: 1.05rem; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+        .empty-desc { font-size: 0.85rem; color: var(--ink-faint); font-weight: 300; }
 
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(12px); }
+            from { opacity: 0; transform: translateY(10px); }
             to   { opacity: 1; transform: translateY(0); }
         }
 
@@ -263,172 +193,107 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 16px;
+            padding: 20px 24px 4px;
             max-width: 480px;
             margin: 0 auto;
         }
         .overlay-title {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--brand-dark);
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--ink);
             display: flex;
             align-items: center;
             gap: 6px;
         }
         .btn-cancel {
-            padding: 6px 14px;
+            padding: 6px 15px;
             border: 1.5px solid var(--danger);
-            border-radius: 8px;
+            border-radius: 999px;
             background: transparent;
             color: var(--danger);
             font-family: inherit;
             font-size: 0.8rem;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
             transition: background 0.2s;
         }
-        .btn-cancel:active { background: var(--danger-bg); }
+        .btn-cancel:active { background: var(--danger-tint); }
 
-        .overlay-body {
-            max-width: 480px;
-            margin: 0 auto;
-            padding: 0 16px;
-        }
+        .overlay-body { max-width: 480px; margin: 0 auto; padding: 0 20px; }
 
         .date-banner {
             padding: 10px 14px;
-            border-radius: var(--radius-sm);
+            border-radius: 6px;
             font-size: 0.85rem;
-            font-weight: 600;
-            text-align: center;
-            margin-bottom: 14px;
-        }
-        .date-banner.edit {
-            background: var(--warning-bg);
-            color: #8B6914;
-            border: 1px solid #F0D68A;
-        }
-        .date-banner.slip {
-            background: var(--info-bg);
-            color: var(--info);
-            border: 1px solid #A8D8EA;
-        }
-
-        /* ─── Form Sections ─── */
-        .form-section {
-            background: var(--surface);
-            border-radius: var(--radius-md);
-            padding: 18px;
-            margin-bottom: 14px;
-            box-shadow: var(--shadow-sm);
-        }
-        .section-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 14px;
-        }
-        .section-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: var(--radius-sm);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.95rem;
-            flex-shrink: 0;
-        }
-        .section-icon.app     { background: var(--brand-pale); }
-        .section-icon.outside  { background: var(--warning-bg); }
-        .section-icon.airport  { background: var(--success-bg); }
-        .section-icon.bank     { background: var(--purple-bg); }
-        .section-icon.upload   { background: var(--info-bg); }
-
-        .section-title {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .input-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-        .input-grid .full-width { grid-column: 1 / -1; }
-
-        .input-label {
-            display: block;
-            font-size: 0.72rem;
             font-weight: 500;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-            letter-spacing: 0.3px;
+            margin: 16px 0 6px;
         }
+        .date-banner.edit { border-left: 3px solid var(--orange); background: rgba(224,122,31,0.06); color: var(--orange); }
+        .date-banner.slip { border-left: 3px solid var(--blue); background: rgba(62,111,224,0.06); color: var(--blue); }
+
+        /* ─── Form Sections (cardless, underline inputs — matches daily report page) ─── */
+        .section { padding: 22px 0; border-top: 1px solid var(--rule); }
+        .section-eyebrow { font-size: 0.68rem; letter-spacing: 2px; font-weight: 600; margin-bottom: 4px; }
+        .section.c-teal   .section-eyebrow { color: var(--accent); }
+        .section.c-blue   .section-eyebrow { color: var(--blue); }
+        .section.c-orange .section-eyebrow { color: var(--orange); }
+        .section.c-purple .section-eyebrow { color: var(--purple); }
+        .section-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 16px; }
+
+        .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 16px; }
+        .input-grid .full-width { grid-column: 1 / -1; }
+        .input-label { display: block; font-size: 0.7rem; font-weight: 400; color: var(--ink-faint); margin-bottom: 6px; }
         .input-field {
             width: 100%;
-            padding: 10px 12px;
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius-sm);
-            background: var(--bg);
-            font-family: inherit;
-            font-size: 0.95rem;
+            padding: 6px 2px 9px;
+            border: none;
+            border-bottom: 1px solid var(--rule);
+            background: transparent;
+            font-family: var(--font);
+            font-size: 1rem;
             font-weight: 500;
-            color: var(--text-primary);
-            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+            color: var(--ink);
             outline: none;
             -webkit-appearance: none;
+            transition: border-color 0.2s;
         }
-        .input-field::placeholder {
-            color: var(--text-muted);
-            font-weight: 400;
-        }
-        .input-field:focus {
-            border-color: var(--brand-light);
-            background: #fff;
-            box-shadow: 0 0 0 3px rgba(78,177,179,0.12);
-        }
-        select.input-field {
-            cursor: pointer;
-        }
-        input[type="file"].input-field {
-            font-size: 0.85rem;
-            padding: 8px 10px;
-        }
+        .input-field::placeholder { color: var(--ink-faint); font-weight: 300; }
+        .section.c-teal   .input-field:focus { border-bottom-color: var(--accent); }
+        .section.c-blue   .input-field:focus { border-bottom-color: var(--blue); }
+        .section.c-orange .input-field:focus { border-bottom-color: var(--orange); }
+        .section.c-purple .input-field:focus { border-bottom-color: var(--purple); }
+        select.input-field { cursor: pointer; }
+        input[type="file"].input-field { font-size: 0.85rem; padding-bottom: 10px; }
 
-        .helper-text {
-            font-size: 0.72rem;
-            color: var(--text-muted);
-            margin-top: 6px;
-        }
+        .helper-text { font-size: 0.72rem; color: var(--ink-faint); margin-top: 8px; line-height: 1.5; }
 
         /* ─── Buttons ─── */
         .btn-submit {
             display: block;
             width: 100%;
-            padding: 14px;
-            margin-top: 18px;
-            border: none;
-            border-radius: var(--radius-md);
-            background: linear-gradient(135deg, var(--brand-dark), var(--brand-mid));
-            color: #fff;
-            font-family: inherit;
-            font-size: 1rem;
+            padding: 15px;
+            margin-top: 26px;
+            border: 1.5px solid var(--accent);
+            border-radius: 999px;
+            background: transparent;
+            color: var(--accent);
+            font-family: var(--font);
+            font-size: 0.98rem;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
-            box-shadow: var(--shadow-md);
+            transition: background 0.2s, color 0.2s, transform 0.15s;
         }
-        .btn-submit:active { transform: scale(0.98); }
-        .btn-submit:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
-        .btn-submit.info { background: linear-gradient(135deg, var(--info), #3BA5CC); }
+        .btn-submit:active { background: var(--accent); color: #06201A; transform: scale(0.98); }
+        .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .btn-submit.info { border-color: var(--blue); color: var(--blue); }
+        .btn-submit.info:active { background: var(--blue); color: #fff; }
 
         /* ─── Modal ─── */
         .modal-backdrop {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.45);
+            background: rgba(16,37,32,0.45);
             z-index: 9999;
             justify-content: center;
             align-items: center;
@@ -437,42 +302,33 @@
         .modal-backdrop.show { display: flex; }
         .modal-box {
             background: var(--surface);
-            border-radius: var(--radius-lg);
-            padding: 28px 24px;
+            border-radius: 20px;
+            padding: 30px 26px;
             max-width: 300px;
             width: 90%;
             text-align: center;
-            box-shadow: 0 16px 48px rgba(0,0,0,0.2);
+            box-shadow: 0 16px 40px rgba(16,37,32,0.18);
             animation: scaleIn 0.25s ease;
         }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes scaleIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        @keyframes scaleIn { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: scale(1); } }
 
-        .modal-icon { font-size: 3rem; margin-bottom: 12px; }
-        .modal-msg {
-            font-size: 0.95rem;
-            font-weight: 600;
-            margin-bottom: 4px;
-            line-height: 1.5;
-        }
-        .modal-msg small {
-            font-size: 0.78rem;
-            font-weight: 400;
-            color: var(--text-muted);
-        }
-        .modal-msg.success { color: var(--success); }
+        .modal-icon { font-size: 2.6rem; margin-bottom: 12px; }
+        .modal-msg { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; line-height: 1.55; }
+        .modal-msg small { font-size: 0.78rem; font-weight: 400; color: var(--ink-faint); }
+        .modal-msg.success { color: var(--accent); }
         .modal-msg.warning { color: var(--warning); }
         .modal-msg.error   { color: var(--danger); }
-        .modal-msg.loading { color: var(--text-primary); }
+        .modal-msg.loading { color: var(--ink); }
 
         .btn-modal-ok {
             margin-top: 16px;
             padding: 8px 28px;
-            border: 1.5px solid var(--border);
-            border-radius: 8px;
+            border: 1.5px solid var(--rule);
+            border-radius: 999px;
             background: transparent;
-            color: var(--text-secondary);
-            font-family: inherit;
+            color: var(--ink-soft);
+            font-family: var(--font);
             font-size: 0.85rem;
             font-weight: 500;
             cursor: pointer;
@@ -482,25 +338,23 @@
 
         /* ─── Status Cards ─── */
         .status-card {
-            background: var(--surface);
-            border-radius: var(--radius-lg);
-            padding: 28px 24px;
+            border: 1px solid var(--rule);
+            border-radius: 20px;
+            padding: 30px 22px;
             margin-top: 24px;
-            box-shadow: var(--shadow-lg);
             text-align: center;
             animation: fadeUp 0.4s ease both;
         }
-        .status-card.danger  { border-top: 4px solid var(--danger); }
-        .status-card.warning { border-top: 4px solid var(--warning); }
-        .status-icon-lg { font-size: 3.5rem; margin-bottom: 8px; }
-        .status-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+        .status-card.danger  { border-color: rgba(217,67,59,0.35); }
+        .status-card.warning { border-color: rgba(194,121,14,0.35); }
+        .status-icon-lg { font-size: 3rem; margin-bottom: 10px; }
+        .status-title { font-size: 1.02rem; font-weight: 600; margin-bottom: 8px; }
         .status-title.danger  { color: var(--danger); }
         .status-title.warning { color: var(--warning); }
-        .status-desc { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.7; }
+        .status-desc { font-size: 0.85rem; color: var(--ink-soft); font-weight: 300; line-height: 1.7; }
 
-        .error-text { text-align: center; color: var(--danger); font-weight: 600; padding: 40px 20px; font-size: 0.9rem; }
+        .error-text { text-align: center; color: var(--danger); font-weight: 500; padding: 40px 20px; font-size: 0.9rem; }
 
-        /* ─── Utility ─── */
         .hidden { display: none !important; }
 
         @media (prefers-reduced-motion: reduce) {
@@ -512,9 +366,21 @@
 
     <!-- ═══════ HISTORY LIST ═══════ -->
     <div id="historyList">
-        <div class="header">
-            <div class="header-title">แนบสลิป</div>
-            <div class="header-sub">ประวัติการส่งยอด</div>
+        <div class="app-header">
+            <div class="app-logo">TAXI<span class="hi">EV</span></div>
+            <div class="app-header-dot">CHIANG MAI</div>
+        </div>
+        <div class="hero">
+            <div class="confetti" aria-hidden="true">
+                <span style="width:6px;height:6px;top:2px;left:24px;background:var(--accent);"></span>
+                <span style="width:4px;height:4px;top:22px;left:62px;background:var(--orange);"></span>
+                <span style="width:8px;height:8px;top:6px;right:20px;background:var(--blue);opacity:0.5;"></span>
+                <span style="width:4px;height:4px;top:36px;right:56px;background:var(--purple);"></span>
+            </div>
+            <div class="hero-content">
+                <div class="hero-title"><span class="accent">แนบสลิป</span></div>
+                <div class="hero-caption">ประวัติการส่งยอดของคุณ</div>
+            </div>
         </div>
         <div class="container">
             <div id="loader" class="loader-wrap">
@@ -537,11 +403,9 @@
                 <input type="hidden" id="editRow">
                 <input type="hidden" id="editTimestamp">
 
-                <div class="form-section">
-                    <div class="section-header">
-                        <div class="section-icon app">📱</div>
-                        <div class="section-title">รายได้จากแอปพลิเคชัน</div>
-                    </div>
+                <div class="section c-teal">
+                    <div class="section-eyebrow">01 — APPLICATION</div>
+                    <div class="section-title">รายได้จากแอปพลิเคชัน</div>
                     <div class="input-grid">
                         <div><label class="input-label" for="e_grab">Grab</label><input type="number" id="e_grab" class="input-field" placeholder="0" step="any"></div>
                         <div><label class="input-label" for="e_bolt">Bolt</label><input type="number" id="e_bolt" class="input-field" placeholder="0" step="any"></div>
@@ -551,11 +415,9 @@
                     </div>
                 </div>
 
-                <div class="form-section">
-                    <div class="section-header">
-                        <div class="section-icon outside">🚕</div>
-                        <div class="section-title">งานนอกระบบ / เหมา</div>
-                    </div>
+                <div class="section c-blue">
+                    <div class="section-eyebrow">02 — CHARTER</div>
+                    <div class="section-title">งานนอกระบบ / เหมา</div>
                     <div class="input-grid">
                         <div><label class="input-label" for="e_outside">งานนอก</label><input type="number" id="e_outside" class="input-field" placeholder="0" step="any"></div>
                         <div><label class="input-label" for="e_mao">งานเหมา</label><input type="number" id="e_mao" class="input-field" placeholder="0" step="any"></div>
@@ -563,12 +425,12 @@
                     </div>
                 </div>
 
-                <div class="form-section hidden" id="airportSection">
-                    <div class="section-header">
-                        <div class="section-icon airport">✈️</div>
-                        <div class="section-title">งานสนามบิน</div>
+                <div class="section c-orange hidden" id="airportSection">
+                    <div class="section-eyebrow">03 — AIRPORT</div>
+                    <div class="section-title">งานสนามบิน</div>
+                    <div class="input-grid">
+                        <div class="full-width"><label class="input-label" for="e_airport">ยอดหักเข้าสนามบิน (ใส่สูตรได้)</label><input type="text" id="e_airport" class="input-field" placeholder="เช่น 150+150"></div>
                     </div>
-                    <div><label class="input-label" for="e_airport">ยอดหักเข้าสนามบิน (ใส่สูตรได้)</label><input type="text" id="e_airport" class="input-field" placeholder="เช่น 150+150"></div>
                 </div>
 
                 <button type="submit" id="btnSubmitEdit" class="btn-submit">บันทึกยอดใหม่</button>
@@ -589,22 +451,18 @@
                 <input type="hidden" id="slipRow">
                 <input type="hidden" id="slipTimestamp">
 
-                <div class="form-section">
-                    <div class="section-header">
-                        <div class="section-icon bank">🏦</div>
-                        <div class="section-title">โอนเข้าบัญชีธนาคาร</div>
-                    </div>
+                <div class="section c-purple">
+                    <div class="section-eyebrow">01 — BANK</div>
+                    <div class="section-title">โอนเข้าบัญชีธนาคาร</div>
                     <select id="slip_account" class="input-field">
                         <option value="ACCOUNT_A">บัญชีหลัก (หจก. โอเค...)</option>
                         <option value="ACCOUNT_B">บัญชีค่ายาง (นาย เด่นภูมิ )</option>
                     </select>
                 </div>
 
-                <div class="form-section">
-                    <div class="section-header">
-                        <div class="section-icon upload">📷</div>
-                        <div class="section-title">อัปโหลดรูปภาพสลิป</div>
-                    </div>
+                <div class="section c-blue">
+                    <div class="section-eyebrow">02 — UPLOAD</div>
+                    <div class="section-title">อัปโหลดรูปภาพสลิป</div>
                     <input type="file" class="input-field" id="slip_image" accept="image/*" required>
                     <p class="helper-text">ระบบจะส่งรูปภาพนี้ให้แอดมินเพื่อยืนยันการโอนเงินของวันดังกล่าว</p>
                 </div>
