@@ -3,363 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>แนบสลิปและประวัติการส่งยอด - TaxiEV</title>
+    <title>แนบสลิปและประวัติการส่งยอด</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <style>
+        /* ... (CSS คงเดิมทั้งหมด ไม่เปลี่ยนแปลง) ... */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        :root {
-            --bg: #FAFCFB;
-            --surface: #FFFFFF;
-            --ink: #102520;
-            --ink-soft: #4E6B67;
-            --ink-faint: #8AA39F;
-            --accent: #1CA37D;
-            --blue: #3E6FE0;
-            --orange: #E07A1F;
-            --purple: #8862E0;
-            --danger: #D9433B;
-            --danger-tint: rgba(217,67,59,0.08);
-            --warning: #C2790E;
-            --warning-tint: rgba(194,121,14,0.08);
-            --rule: rgba(16,37,32,0.14);
-            --font: 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
-        }
-
-        body {
-            background: var(--bg);
-            color: var(--ink);
-            font-family: var(--font);
-            font-weight: 300;
-            -webkit-font-smoothing: antialiased;
-            padding-bottom: 40px;
-        }
-
-        /* ─── Header ─── */
-        .app-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 24px 24px 0;
-        }
+        :root { --bg: #FAFCFB; --surface: #FFFFFF; --ink: #102520; --ink-soft: #4E6B67; --ink-faint: #8AA39F; --accent: #1CA37D; --blue: #3E6FE0; --orange: #E07A1F; --purple: #8862E0; --danger: #D9433B; --danger-tint: rgba(217,67,59,0.08); --warning: #C2790E; --warning-tint: rgba(194,121,14,0.08); --rule: rgba(16,37,32,0.14); --font: 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif; }
+        body { background: var(--bg); color: var(--ink); font-family: var(--font); font-weight: 300; -webkit-font-smoothing: antialiased; padding-bottom: 40px; }
+        .app-header { display: flex; align-items: center; justify-content: space-between; padding: 24px 24px 0; }
         .app-logo { font-weight: 700; font-size: 1rem; letter-spacing: 0.5px; }
-        .app-logo .hi {
-            background: linear-gradient(100deg, var(--accent), var(--blue));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .app-header-dot {
-            display: flex; align-items: center; gap: 6px;
-            font-size: 0.68rem; color: var(--ink-faint); letter-spacing: 1px;
-        }
-        .app-header-dot::before {
-            content: ''; width: 6px; height: 6px; border-radius: 50%;
-            background: var(--accent); box-shadow: 0 0 6px var(--accent);
-        }
-
-        .hero {
-            position: relative;
-            padding: 18px 24px 20px;
-            overflow: hidden;
-        }
+        .app-logo .hi { background: linear-gradient(100deg, var(--accent), var(--blue)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        .app-header-dot { display: flex; align-items: center; gap: 6px; font-size: 0.68rem; color: var(--ink-faint); letter-spacing: 1px; }
+        .app-header-dot::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 6px var(--accent); }
+        .hero { position: relative; padding: 18px 24px 20px; overflow: hidden; }
         .confetti { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
         .confetti span { position: absolute; border-radius: 50%; opacity: 0.8; }
         .hero-content { position: relative; z-index: 1; }
         .hero-title { font-size: 1.5rem; font-weight: 600; }
         .hero-title .accent { color: var(--accent); font-weight: 700; }
         .hero-caption { margin-top: 6px; font-size: 0.8rem; color: var(--ink-soft); font-weight: 300; }
-
-        /* ─── Container ─── */
         .container { max-width: 480px; margin: 0 auto; padding: 0 20px; }
-
-        /* ─── Loader ─── */
         .loader-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; }
-        .spinner {
-            width: 30px; height: 30px;
-            border: 2.5px solid var(--rule);
-            border-top-color: var(--accent);
-            border-radius: 50%;
-            animation: spin 0.7s linear infinite;
-        }
+        .spinner { width: 30px; height: 30px; border: 2.5px solid var(--rule); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
         .spinner-lg { width: 44px; height: 44px; border-width: 3.5px; }
         @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* ─── History Cards (cardless — underline list) ─── */
-        .history-card {
-            padding: 18px 0;
-            border-bottom: 1px solid var(--rule);
-            animation: fadeUp 0.3s ease both;
-        }
+        .history-card { padding: 18px 0; border-bottom: 1px solid var(--rule); animation: fadeUp 0.3s ease both; }
         .history-card:first-child { padding-top: 4px; }
-
-        .card-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 10px;
-        }
+        .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
         .card-date { font-size: 0.95rem; font-weight: 600; color: var(--ink); line-height: 1.3; }
-        .badge-edit {
-            display: inline-flex;
-            margin-top: 5px;
-            padding: 2px 8px;
-            border-radius: 20px;
-            font-size: 0.66rem;
-            font-weight: 500;
-            border: 1px solid rgba(217,67,59,0.35);
-            color: var(--danger);
-        }
+        .badge-edit { display: inline-flex; margin-top: 5px; padding: 2px 8px; border-radius: 20px; font-size: 0.66rem; font-weight: 500; border: 1px solid rgba(217,67,59,0.35); color: var(--danger); }
         .card-actions { display: flex; gap: 6px; flex-shrink: 0; }
-        .btn-action {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 6px 11px;
-            border-radius: 999px;
-            font-family: inherit;
-            font-size: 0.72rem;
-            font-weight: 600;
-            cursor: pointer;
-            background: transparent;
-            transition: transform 0.15s, background 0.2s;
-            white-space: nowrap;
-        }
+        .btn-action { display: inline-flex; align-items: center; gap: 4px; padding: 6px 11px; border-radius: 999px; font-family: inherit; font-size: 0.72rem; font-weight: 600; cursor: pointer; background: transparent; transition: transform 0.15s, background 0.2s; white-space: nowrap; }
         .btn-action:active { transform: scale(0.96); }
         .btn-action.slip { border: 1.5px solid var(--blue); color: var(--blue); }
         .btn-action.slip:active { background: rgba(62,111,224,0.08); }
         .btn-action.edit { border: 1.5px solid var(--orange); color: var(--orange); }
         .btn-action.edit:active { background: rgba(224,122,31,0.08); }
-
-        .card-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            margin-top: 14px;
-        }
+        .card-stats { display: grid; grid-template-columns: 1fr 1fr; margin-top: 14px; }
         .stat-item { text-align: center; padding: 4px 0; }
         .stat-item:first-child { border-right: 1px solid var(--rule); }
         .stat-label { font-size: 0.7rem; color: var(--ink-faint); margin-bottom: 2px; }
         .stat-value { font-size: 1.05rem; font-weight: 700; color: var(--ink); }
         .stat-value.brand { color: var(--accent); }
-
-        /* Alerts — left accent bar, no heavy fill */
-        .card-alert {
-            margin-top: 12px;
-            padding: 9px 12px;
-            border-radius: 6px;
-            font-size: 0.78rem;
-            line-height: 1.55;
-        }
+        .card-alert { margin-top: 12px; padding: 9px 12px; border-radius: 6px; font-size: 0.78rem; line-height: 1.55; }
         .card-alert strong { font-weight: 600; }
-        .card-alert.pending {
-            border: 1px dashed var(--rule);
-            color: var(--ink-soft);
-        }
-        .card-alert.error {
-            border-left: 3px solid var(--danger);
-            background: var(--danger-tint);
-            color: var(--danger);
-        }
-        .card-alert.review {
-            border-left: 3px solid var(--warning);
-            background: var(--warning-tint);
-            color: var(--warning);
-        }
-
+        .card-alert.pending { border: 1px dashed var(--rule); color: var(--ink-soft); }
+        .card-alert.error { border-left: 3px solid var(--danger); background: var(--danger-tint); color: var(--danger); }
+        .card-alert.review { border-left: 3px solid var(--warning); background: var(--warning-tint); color: var(--warning); }
         .empty-state { text-align: center; padding: 56px 20px; }
         .empty-icon { font-size: 3rem; margin-bottom: 12px; }
         .empty-title { font-size: 1.05rem; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
         .empty-desc { font-size: 0.85rem; color: var(--ink-faint); font-weight: 300; }
-
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ─── Overlay Pages (Edit / Slip) ─── */
-        .overlay-page {
-            display: none;
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            min-height: 100vh;
-            background: var(--bg);
-            z-index: 1000;
-            padding: 0 0 40px;
-        }
-        .overlay-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 24px 4px;
-            max-width: 480px;
-            margin: 0 auto;
-        }
-        .overlay-title {
-            font-size: 1.05rem;
-            font-weight: 600;
-            color: var(--ink);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .btn-cancel {
-            padding: 6px 15px;
-            border: 1.5px solid var(--danger);
-            border-radius: 999px;
-            background: transparent;
-            color: var(--danger);
-            font-family: inherit;
-            font-size: 0.8rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .overlay-page { display: none; position: absolute; top: 0; left: 0; right: 0; min-height: 100vh; background: var(--bg); z-index: 1000; padding: 0 0 40px; }
+        .overlay-top { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px 4px; max-width: 480px; margin: 0 auto; }
+        .overlay-title { font-size: 1.05rem; font-weight: 600; color: var(--ink); display: flex; align-items: center; gap: 6px; }
+        .btn-cancel { padding: 6px 15px; border: 1.5px solid var(--danger); border-radius: 999px; background: transparent; color: var(--danger); font-family: inherit; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
         .btn-cancel:active { background: var(--danger-tint); }
-
         .overlay-body { max-width: 480px; margin: 0 auto; padding: 0 20px; }
-
-        .date-banner {
-            padding: 10px 14px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            margin: 16px 0 6px;
-        }
+        .date-banner { padding: 10px 14px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; margin: 16px 0 6px; }
         .date-banner.edit { border-left: 3px solid var(--orange); background: rgba(224,122,31,0.06); color: var(--orange); }
         .date-banner.slip { border-left: 3px solid var(--blue); background: rgba(62,111,224,0.06); color: var(--blue); }
-
-        /* ─── Form Sections (cardless, underline inputs — matches daily report page) ─── */
         .section { padding: 22px 0; border-top: 1px solid var(--rule); }
         .section-eyebrow { font-size: 0.68rem; letter-spacing: 2px; font-weight: 600; margin-bottom: 4px; }
-        .section.c-teal   .section-eyebrow { color: var(--accent); }
-        .section.c-blue   .section-eyebrow { color: var(--blue); }
-        .section.c-orange .section-eyebrow { color: var(--orange); }
-        .section.c-purple .section-eyebrow { color: var(--purple); }
+        .section.c-teal .section-eyebrow { color: var(--accent); } .section.c-blue .section-eyebrow { color: var(--blue); } .section.c-orange .section-eyebrow { color: var(--orange); } .section.c-purple .section-eyebrow { color: var(--purple); }
         .section-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 16px; }
-
         .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 16px; }
         .input-grid .full-width { grid-column: 1 / -1; }
         .input-label { display: block; font-size: 0.7rem; font-weight: 400; color: var(--ink-faint); margin-bottom: 6px; }
-        .input-field {
-            width: 100%;
-            padding: 6px 2px 9px;
-            border: none;
-            border-bottom: 1px solid var(--rule);
-            background: transparent;
-            font-family: var(--font);
-            font-size: 1rem;
-            font-weight: 500;
-            color: var(--ink);
-            outline: none;
-            -webkit-appearance: none;
-            transition: border-color 0.2s;
-        }
+        .input-field { width: 100%; padding: 6px 2px 9px; border: none; border-bottom: 1px solid var(--rule); background: transparent; font-family: var(--font); font-size: 1rem; font-weight: 500; color: var(--ink); outline: none; -webkit-appearance: none; transition: border-color 0.2s; }
         .input-field::placeholder { color: var(--ink-faint); font-weight: 300; }
-        .section.c-teal   .input-field:focus { border-bottom-color: var(--accent); }
-        .section.c-blue   .input-field:focus { border-bottom-color: var(--blue); }
-        .section.c-orange .input-field:focus { border-bottom-color: var(--orange); }
-        .section.c-purple .input-field:focus { border-bottom-color: var(--purple); }
+        .section.c-teal .input-field:focus { border-bottom-color: var(--accent); } .section.c-blue .input-field:focus { border-bottom-color: var(--blue); } .section.c-orange .input-field:focus { border-bottom-color: var(--orange); } .section.c-purple .input-field:focus { border-bottom-color: var(--purple); }
         select.input-field { cursor: pointer; }
         input[type="file"].input-field { font-size: 0.85rem; padding-bottom: 10px; }
-
         .helper-text { font-size: 0.72rem; color: var(--ink-faint); margin-top: 8px; line-height: 1.5; }
-
-        /* ─── Buttons ─── */
-        .btn-submit {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            margin-top: 26px;
-            border: 1.5px solid var(--accent);
-            border-radius: 999px;
-            background: transparent;
-            color: var(--accent);
-            font-family: var(--font);
-            font-size: 0.98rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s, color 0.2s, transform 0.15s;
-        }
+        .btn-submit { display: block; width: 100%; padding: 15px; margin-top: 26px; border: 1.5px solid var(--accent); border-radius: 999px; background: transparent; color: var(--accent); font-family: var(--font); font-size: 0.98rem; font-weight: 600; cursor: pointer; transition: background 0.2s, color 0.2s, transform 0.15s; }
         .btn-submit:active { background: var(--accent); color: #06201A; transform: scale(0.98); }
         .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
         .btn-submit.info { border-color: var(--blue); color: var(--blue); }
         .btn-submit.info:active { background: var(--blue); color: #fff; }
-
-        /* ─── Modal ─── */
-        .modal-backdrop {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(16,37,32,0.45);
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
-            animation: fadeIn 0.2s ease;
-        }
+        .modal-backdrop { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(16,37,32,0.45); z-index: 9999; justify-content: center; align-items: center; animation: fadeIn 0.2s ease; }
         .modal-backdrop.show { display: flex; }
-        .modal-box {
-            background: var(--surface);
-            border-radius: 20px;
-            padding: 30px 26px;
-            max-width: 300px;
-            width: 90%;
-            text-align: center;
-            box-shadow: 0 16px 40px rgba(16,37,32,0.18);
-            animation: scaleIn 0.25s ease;
-        }
+        .modal-box { background: var(--surface); border-radius: 20px; padding: 30px 26px; max-width: 300px; width: 90%; text-align: center; box-shadow: 0 16px 40px rgba(16,37,32,0.18); animation: scaleIn 0.25s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes scaleIn { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: scale(1); } }
-
         .modal-icon { font-size: 2.6rem; margin-bottom: 12px; }
         .modal-msg { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; line-height: 1.55; }
         .modal-msg small { font-size: 0.78rem; font-weight: 400; color: var(--ink-faint); }
-        .modal-msg.success { color: var(--accent); }
-        .modal-msg.warning { color: var(--warning); }
-        .modal-msg.error   { color: var(--danger); }
-        .modal-msg.loading { color: var(--ink); }
-
-        .btn-modal-ok {
-            margin-top: 16px;
-            padding: 8px 28px;
-            border: 1.5px solid var(--rule);
-            border-radius: 999px;
-            background: transparent;
-            color: var(--ink-soft);
-            font-family: var(--font);
-            font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
+        .modal-msg.success { color: var(--accent); } .modal-msg.warning { color: var(--warning); } .modal-msg.error { color: var(--danger); } .modal-msg.loading { color: var(--ink); }
+        .btn-modal-ok { margin-top: 16px; padding: 8px 28px; border: 1.5px solid var(--rule); border-radius: 999px; background: transparent; color: var(--ink-soft); font-family: var(--font); font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: background 0.2s; }
         .btn-modal-ok:active { background: var(--bg); }
-
-        /* ─── Status Cards ─── */
-        .status-card {
-            border: 1px solid var(--rule);
-            border-radius: 20px;
-            padding: 30px 22px;
-            margin-top: 24px;
-            text-align: center;
-            animation: fadeUp 0.4s ease both;
-        }
+        .status-card { border: 1px solid var(--rule); border-radius: 20px; padding: 30px 22px; margin-top: 24px; text-align: center; animation: fadeUp 0.4s ease both; }
         .status-card.danger  { border-color: rgba(217,67,59,0.35); }
         .status-card.warning { border-color: rgba(194,121,14,0.35); }
         .status-icon-lg { font-size: 3rem; margin-bottom: 10px; }
         .status-title { font-size: 1.02rem; font-weight: 600; margin-bottom: 8px; }
-        .status-title.danger  { color: var(--danger); }
-        .status-title.warning { color: var(--warning); }
+        .status-title.danger  { color: var(--danger); } .status-title.warning { color: var(--warning); }
         .status-desc { font-size: 0.85rem; color: var(--ink-soft); font-weight: 300; line-height: 1.7; }
-
-        .error-text { text-align: center; color: var(--danger); font-weight: 500; padding: 40px 20px; font-size: 0.9rem; }
-
         .hidden { display: none !important; }
-
-        @media (prefers-reduced-motion: reduce) {
-            .history-card, .status-card, .modal-box { animation: none; }
-        }
+        @media (prefers-reduced-motion: reduce) { .history-card, .status-card, .modal-box { animation: none; } }
     </style>
 </head>
 <body>
@@ -367,7 +112,8 @@
     <!-- ═══════ HISTORY LIST ═══════ -->
     <div id="historyList">
         <div class="app-header">
-            <div class="app-logo">TAXI<span class="hi">EV</span></div>
+            <!-- 🌟 เพิ่ม ID ให้ตัวโลโก้ เพื่อเปลี่ยนชื่อตามบริษัท -->
+            <div class="app-logo" id="dynamicLogo">TAXI<span class="hi">EV</span></div>
             <div class="app-header-dot">CHIANG MAI</div>
         </div>
         <div class="hero">
@@ -392,6 +138,7 @@
 
     <!-- ═══════ EDIT OVERLAY ═══════ -->
     <div id="editSection" class="overlay-page">
+        <!-- ... (คงเดิม) ... -->
         <div class="overlay-top">
             <div class="overlay-title">✏️ แก้ไขยอด</div>
             <button class="btn-cancel" onclick="closeForms()">ยกเลิก</button>
@@ -454,10 +201,9 @@
                 <div class="section c-purple">
                     <div class="section-eyebrow">01 — BANK</div>
                     <div class="section-title">โอนเข้าบัญชีธนาคาร</div>
-                    <select id="slip_account" class="input-field">
-                        <option value="ACCOUNT_A">บัญชีหลัก (หจก. โอเค...)</option>
-                        <option value="ACCOUNT_B">บัญชีค่ายาง (นาย เด่นภูมิ )</option>
-                    </select>
+                    
+                    <!-- 🌟 ปล่อยว่างไว้ ให้ JavaScript เป็นคนใส่ตัวเลือกบัญชีตามบริษัท -->
+                    <select id="slip_account" class="input-field"></select>
                 </div>
 
                 <div class="section c-blue">
@@ -478,7 +224,7 @@
     </div>
 
     <script>
-        const LIFF_ID = "2009451309-RaBXjBUG";
+        const LIFF_ID = "2009451309-RaBXjBUG"; // 🔴 ไอดี LIFF สำหรับหน้าแนบสลิป
         const GAS_URL = "https://script.google.com/macros/s/AKfycbzuh0khDmnAU624NO5a6LSLFDhp0-k-9VROw-ETyqE2wcn9c3f2tv0lLDA7ONfu17SI/exec";
         let uid = "";
         let currentHistoryData = [];
@@ -490,7 +236,7 @@
             loadInitialData(uid);
         }
 
-        /* ─── Modal (replaces Bootstrap Modal) ─── */
+        /* ─── Modal ─── */
         function showStatus(type, message) {
             const box = document.getElementById('modalBox');
             let icon = '', cls = '';
@@ -525,15 +271,45 @@
                 const data = await res.json();
 
                 if (data.status === "success") {
+                    
+                    // 🌟 1. ดึงสังกัดบริษัท (เพื่อเปลี่ยนโลโก้ และ จัดการตัวเลือกบัญชี)
+                    const compName = data.company || "TaxiEV"; 
+                    
+                    // เปลี่ยนโลโก้
+                    if (compName !== "TaxiEV") {
+                        document.getElementById('dynamicLogo').innerHTML = `<span style="color: var(--blue); font-weight: 700;">${compName.toUpperCase()}</span>`;
+                        document.title = `แนบสลิป - ${compName}`;
+                    }
+
+                    // สร้างตัวเลือกบัญชีธนาคารตามสังกัดบริษัท
+                    const accountSelect = document.getElementById('slip_account');
+                    accountSelect.innerHTML = ""; 
+                    
+                    if (compName === "TaxiEV") {
+                        accountSelect.innerHTML = `
+                            <option value="ACCOUNT_A">บัญชีหลัก (หจก. โอเค...)</option>
+                            <option value="ACCOUNT_B">บัญชีค่ายาง (นาย เด่นภูมิ)</option>
+                        `;
+                    } else if (compName === "Model 3") {
+                        accountSelect.innerHTML = `<option value="ACCOUNT_C">บัญชี Model 3 (นาย เด่นภูมิ)</option>`;
+                    } else if (compName === "Model JKW") {
+                        accountSelect.innerHTML = `<option value="ACCOUNT_D">บัญชี Model JKW (นาย เด่นภูมิ)</option>`;
+                    } else {
+                        // ป้องกันกรณีไม่ตรงกับเงื่อนไขใดเลย
+                        accountSelect.innerHTML = `<option value="ACCOUNT_A">บัญชีบริษัท</option>`;
+                    }
+
+                    // โหลดประวัติ
                     if (data.history && data.history.length > 0) {
                         currentHistoryData = data.history;
                         renderHistory(currentHistoryData);
                     } else {
-                        document.getElementById('cardsContainer').innerHTML = "<p style='text-align:center;color:var(--text-muted);padding:40px 0;'>ยังไม่มีประวัติการส่งยอดครับ</p>";
+                        document.getElementById('cardsContainer').innerHTML = "<p style='text-align:center;color:var(--ink-faint);padding:40px 0;'>ยังไม่มีประวัติการค้างส่งยอดครับ</p>";
                     }
                     document.getElementById('loader').classList.add('hidden');
                 }
                 else if (data.status === "suspended") {
+                    // (กรณีถูกระงับ เหมือนเดิม)
                     document.getElementById('loader').classList.add('hidden');
                     document.getElementById('historyList').innerHTML = `
                         <div class="container" style="padding-top:40px;">
@@ -568,7 +344,6 @@
 
             historyArray.forEach((item, index) => {
                 const slipStatusStr = item.slipStatus || "";
-
                 if (slipStatusStr.includes("ตรวจสอบแล้ว ✅")) return;
 
                 visibleCount++;
