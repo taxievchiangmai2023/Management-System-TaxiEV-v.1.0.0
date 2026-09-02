@@ -434,12 +434,12 @@
             document.getElementById('e_mao').value = item.mao || "";
             document.getElementById('e_mao_location').value = item.mao_location || "";
 
-            if (item.type === "แอป") {
-                document.getElementById('airportSection').classList.add('hidden');
-                document.getElementById('e_airport').value = "";
-            } else {
+            if (item.type === "สนามบิน" || item.type === "สนามบิน50/50") {
                 document.getElementById('airportSection').classList.remove('hidden');
                 document.getElementById('e_airport').value = item.airport_calc || "";
+            } else {
+                document.getElementById('airportSection').classList.add('hidden');
+                document.getElementById('e_airport').value = "";
             }
 
             document.getElementById('historyList').style.display = 'none';
