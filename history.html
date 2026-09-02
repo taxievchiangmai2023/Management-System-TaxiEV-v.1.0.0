@@ -294,7 +294,10 @@
                         accountSelect.innerHTML = `<option value="ACCOUNT_C">บัญชี Model 3 (นาย เด่นภูมิ)</option>`;
                     } else if (compName === "Model JKW") {
                         accountSelect.innerHTML = `<option value="ACCOUNT_D">บัญชี Model JKW (นาย ไชยา จิตจง)</option>`;
-                    } else {
+                    } else if (compName === "All Star") {
+                        accountSelect.innerHTML = `<option value="ACCOUNT_E">บัญชี All Star (นาย เลิศวิชญ์ ...)</option>`;
+                    }
+                    else {
                         // ป้องกันกรณีไม่ตรงกับเงื่อนไขใดเลย
                         accountSelect.innerHTML = `<option value="ACCOUNT_A">บัญชีบริษัท</option>`;
                     }
